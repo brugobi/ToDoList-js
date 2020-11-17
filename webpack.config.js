@@ -2,9 +2,8 @@ const path = require('path');
 const HtmllWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // const FileLoader = require('file-loader');
-
 module.exports = {
-  entry: './src/js/index.js',
+  entry: './src/index.js',
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
@@ -37,13 +36,8 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env'],
-          },
-        },
+        enforce: 'pre',
+        use: ['source-map-loader'],
       },
       {
         test: /\.(png|svg|jpe?g|gif)$/i,
