@@ -45,5 +45,18 @@ formSubmit.addEventListener('click', (event) => {
     isdone: false,
   };
   arrayOfTasks.push(newTodo);
+  const form = document.getElementById('form');
+  form.innerHTML = '';
   displayTasks(arrayOfTasks);
+});
+
+// add new projects
+const arrayProject = [];
+const newProject = document.getElementById('submit-project-form');
+newProject.addEventListener('click', (e) => {
+  let projectTitle = document.getElementById('projectTitle').value.toLowerCase().replace(/\s/g, '');
+  if (!arrayProject.includes(projectTitle)) {
+    arrayProject.push(projectTitle);
+  };
+  console.log(arrayProject);
 });
