@@ -7,3 +7,8 @@
   // padding: 0;
   // box-sizing: border-box;
 }
+
+#todoDisplay {
+  width: 100%;
+  table-layout: fixed;
+}

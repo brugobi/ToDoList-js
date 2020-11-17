@@ -22,116 +22,32 @@
         </a>
       </div>
     </nav>
-    <div class="container">
-      <div class="columns">
-        <div class="is-one-third">
+    <div id="modalContainer"></div>
+    <div id="mainContainer" class="container is-full-width">
+      <div class="columns is-3">
+        <div class="column is-one-third p-5">
           <aside class="menu">
-            <p class="menu-label">
-              General
-            </p>
             <ul class="menu-list">
-              <li><a>Dashboard</a></li>
-              <li><a>Customers</a></li>
-            </ul>
-            <p class="menu-label">
-              Administration
-            </p>
-            <ul class="menu-list">
-              <li><a>Team Settings</a></li>
+              <li><a>All</a></li>
+              <li><a>Today</a></li>
+              <li><a>This week</a></li>
               <li>
-                <a class="is-active">Manage Your Team</a>
+                <a class="is-active">By Projects</a>
                 <ul>
                   <li><a>Members</a></li>
                   <li><a>Plugins</a></li>
                   <li><a>Add a member</a></li>
                 </ul>
               </li>
-              <li><a>Invitations</a></li>
-              <li><a>Cloud Storage Environment Settings</a></li>
-              <li><a>Authentication</a></li>
             </ul>
-            <p class="menu-label">
-              Transactions
-            </p>
-            <ul class="menu-list">
-              <li><a>Payments</a></li>
-              <li><a>Transfers</a></li>
-              <li><a>Balance</a></li>
-            </ul>
+            <div class="container is-flex is-justify-content-space-between">
+              <button id="newTodoFormBtn" class="button is-primary">New ToDo</button>
+              <button id="newProjectBtn" class="button is-warning">New Project</button>
+            </div>
           </aside>
         </div>
-        <div class="is-two-thirds">
-          <div class="modal is-active is-clipped">
-            <div class="modal-background"></div>
-            <div class="modal-card">
-              <header class="modal-card-head">
-                <p class="modal-card-title">Modal title</p>
-                <button class="delete" aria-label="close"></button>
-              </header>
-              <section class="modal-card-body">
-                <div id="form" class="container is-max-desktop">
-                  <div class="field">
-                    <label class="label">Title</label>
-                    <div class="control">
-                      <input id="todoTitle" class="input" type="text" placeholder="Title">
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Project</label>
-                    <div class="control">
-                      <div class="select">
-                        <select id="selectProject">
-                          <option>Projects</option>
-                          <option>Add a new project</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Description</label>
-                    <div class="control">
-                      <textarea id="todoDescription" class="textarea" placeholder="Description..."></textarea>
-                    </div>
-                  </div>
-                  <div class="columns">
-                    <div class="column is-one-quarter">
-                      <div class="field">
-                        <label class="label">Due Date</label>
-                        <div class="control">
-                          <input id="todoDueDate" class="input" type="datetime-local" placeholder="Pick a Date">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                
-                  <div class="field">
-                    <div class="control">
-                      <label class="checkbox">
-                        <input id="todoPriority" type="checkbox">
-                        Priority
-                      </label>
-                    </div>
-                  </div>
-                
-                  <div class="field is-grouped">
-                    <div class="control">
-                      <button id="submit-todo-form" class="button is-link">Submit</button>
-                    </div>
-                    <div class="control">
-                      <button class="button is-link is-light">Cancel</button>
-                    </div>
-                  </div>
-                </div>
-              </section>
-              <footer class="modal-card-foot">
-                <button class="button is-success">Save changes</button>
-                <button class="button">Cancel</button>
-              </footer>
-            </div>
-          </div>
-          
-      
-          <div class="container is-max-desktop">
+        <div class="column is-two-thirds p-5">
+          <div class="container is-max-desktop is-centered">
             <table id="todoDisplay" class="table">
               <tr>
                 <th>Title</th>
@@ -149,22 +65,6 @@
                 <td></td>
               </tr>
             </table>
-          </div>
-          <div class="container is-max-desktop">
-            <div class="field">
-              <label class="label">Project Title</label>
-              <div class="control">
-                <input id="projectTitle" class="input" type="text" placeholder="ProjectTitle">
-              </div>
-            </div>
-            <div class="field is-grouped">
-              <div class="control">
-                <button id="submit-project-form" class="button is-link">Submit</button>
-              </div>
-              <div class="control">
-                <button class="button is-link is-light">Cancel</button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
