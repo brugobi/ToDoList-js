@@ -9,21 +9,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-    <div class="container">
+    <div class="container is-max-desktop">
       <div class="field">
         <label class="label">Title</label>
         <div class="control">
-          <input class="input" type="text" placeholder="Title">
+          <input id="todoTitle" class="input" type="text" placeholder="Title">
         </div>
       </div>
       
       <div class="field">
-        <label class="label">Subject</label>
+        <label class="label">Project</label>
         <div class="control">
           <div class="select">
-            <select>
-              <option>Select dropdown</option>
-              <option>With options</option>
+            <select id="selectProject">
+              <option>Projects</option>
+              <option>Add a new project</option>
             </select>
           </div>
         </div>
@@ -32,40 +32,58 @@
       <div class="field">
         <label class="label">Description</label>
         <div class="control">
-          <textarea class="textarea" placeholder="Description..."></textarea>
+          <textarea id="todoDescription" class="textarea" placeholder="Description..."></textarea>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-one-quarter">
+          <div class="field">
+            <label class="label">Due Date</label>
+            <div class="control">
+              <input id="todoDueDate" class="input" type="datetime-local" placeholder="Pick a Date">
+            </div>
+          </div>
         </div>
       </div>
       
       <div class="field">
         <div class="control">
           <label class="checkbox">
-            <input type="checkbox">
-            I agree to the <a href="#">terms and conditions</a>
-          </label>
-        </div>
-      </div>
-      
-      <div class="field">
-        <div class="control">
-          <label class="radio">
-            <input type="radio" name="question">
-            Yes
-          </label>
-          <label class="radio">
-            <input type="radio" name="question">
-            No
+            <input id="todoPriority" type="checkbox">
+            Priority
           </label>
         </div>
       </div>
       
       <div class="field is-grouped">
         <div class="control">
-          <button class="button is-link">Submit</button>
+          <button id="submit-todo-form" class="button is-link">Submit</button>
         </div>
         <div class="control">
           <button class="button is-link is-light">Cancel</button>
         </div>
       </div>
+    </div>
+
+    <div class="container is-max-desktop">
+      <table id="todoDisplay" class="table">
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Due Date</th>
+          <th>Priority</th>
+          <th>Project</th>
+          <th>It is Done?</th>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><input type="checkbox" name="" id=""></td>
+        </tr>
+      </table>
     </div>
   </body>
 </html>
