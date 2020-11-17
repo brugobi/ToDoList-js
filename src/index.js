@@ -52,11 +52,17 @@ formSubmit.addEventListener('click', (event) => {
 
 // add new projects
 const arrayProject = [];
-const newProject = document.getElementById('submit-project-form');
-newProject.addEventListener('click', (e) => {
-  let projectTitle = document.getElementById('projectTitle').value.toLowerCase().replace(/\s/g, '');
+const submitProjectbtn = document.getElementById('submit-project-form');
+submitProjectbtn.addEventListener('click', (e) => {
+  let projectTitle = document.getElementById('projectTitle').value.toLowerCase();
   if (!arrayProject.includes(projectTitle)) {
     arrayProject.push(projectTitle);
   };
   console.log(arrayProject);
 });
+
+// add the project to the options
+
+const arrayOption = [];
+
+
