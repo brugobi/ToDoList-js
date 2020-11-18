@@ -5,9 +5,7 @@ import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
 import todoForm from './todoform';
 import projectForm from './projectForm';
-
-const arrayOfTasks = [];
-const arrayProjects = ['hello', 'world'];
+import { arrayOfTasks, arrayProjects } from './variables';
 
 const todoConstructor = (title, description, project, duedate, priority) => {
   const isDone = false;
@@ -91,10 +89,11 @@ newProjectBtn.addEventListener('click', () => {
   const submitProjectbtn = document.getElementById('submit-project-form');
   submitProjectbtn.addEventListener('click', () => {
     const projectTitle = document.getElementById('projectTitle').value.toLowerCase();
-    if (!arrayProject.includes(projectTitle)) {
-      arrayProject.push(projectTitle);
+    if (!arrayProjects.includes(projectTitle)) {
+      arrayProjects.push(projectTitle);
     }
     modalContainer.innerHTML = '';
+    console.log(arrayProjects);
   });
   document.querySelectorAll('#close-project-modal').forEach(item => {
     item.addEventListener('click', () => {

@@ -1,7 +1,6 @@
 // import arrayProjects from './index';
 import projectForm from './projectForm';
-
-const arrayProjects = ['hello', 'world'];
+import { arrayProjects } from './variables';
 
 // function createEl(type, cl = '') {
 //   const el = document.createElement(type);
