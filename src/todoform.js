@@ -1,4 +1,7 @@
-//import { arrayProject } from './index';
+// import arrayProjects from './index';
+import projectForm from './projectForm';
+
+const arrayProjects = ['hello', 'world'];
 
 // function createEl(type, cl = '') {
 //   const el = document.createElement(type);
@@ -8,27 +11,21 @@
 //   return el;
 // }
 
-// const newProject = () => {
-//   const arrayProject = [];
-//   const controlDiv = document.createElement('div');
-//   controlDiv.classList.add('control');
-//   const selectDiv = document.createElement('div');
-//   selectDiv.classList.add('select');
-//   controlDiv.appendChild(selectDiv);
-//   const select = document.createElement('select');
-//   select.setAttribute('id', 'selectProject');
-//   selectDiv.appendChild(select);
+const appendProjectsToForm = (projects) => {
+  const wrapper = document.createElement('div');
+  const select = document.createElement('select');
+  select.setAttribute('id', 'selectProject');
 
-//   arrayProject.forEach(element => {
-//     const option = document.createElement('option');
-//     select.appendChild(option);
-//   });
-
-//   const fieldDiv = document.getElementById('fieldProjects');
-//   fieldDiv.appendChild(controlDiv);
-// };
-
-const toDoForm = `
+  projects.forEach((element) => {
+    const option = document.createElement('option');
+    option.innerText = element;
+    select.appendChild(option);
+  });
+  wrapper.appendChild(select);
+  return wrapper;
+};
+const projectPart = appendProjectsToForm(arrayProjects);
+const firstPart = `
 <div id="todo-modal-form" class="modal is-active is-clipped">
   <div class="modal-background"></div>
   <div class="modal-card">
@@ -47,11 +44,9 @@ const toDoForm = `
         <div id="fieldProjects" class="field">
           <label class="label">Projects</label>
           <div class="control">
-            <div class="select">
-              <select id="selectProject">
-                <option>Select dropdown</option>
-                <option>Add a new project</option>
-              </select>
+            <div class="select">`;
+
+const lastPart = `
             </div>
           </div>
         </div>
@@ -88,5 +83,7 @@ const toDoForm = `
   </div>
 </div>`;
 
+const todoForm = `${firstPart}${projectPart.innerHTML}${lastPart}`;
+
 // newProject();
-export default toDoForm;
+export default todoForm;

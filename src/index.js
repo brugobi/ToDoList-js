@@ -3,11 +3,11 @@ import '@fortawesome/fontawesome-free/js/fontawesome';
 import '@fortawesome/fontawesome-free/js/solid';
 import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
-import toDoForm from './todoform';
+import todoForm from './todoform';
 import projectForm from './projectForm';
 
 const arrayOfTasks = [];
-const arrayProject = [];
+const arrayProjects = ['hello', 'world'];
 
 const todoConstructor = (title, description, project, duedate, priority) => {
   const isDone = false;
@@ -54,7 +54,7 @@ function displayTasks(array) {
 const newTodoBtn = document.getElementById('newTodoFormBtn');
 newTodoBtn.addEventListener('click', () => {
   const modalContainer = document.getElementById('modalContainer');
-  modalContainer.innerHTML = toDoForm;
+  modalContainer.innerHTML = todoForm;
   let newTodo = {};
   const formSubmit = document.getElementById('submit-todo-form');
 
@@ -126,3 +126,5 @@ document.querySelectorAll('#close-project-modal').forEach(item => {
 //   const modal = document.getElementById('project-modal-form');
 //   modal.classList.toggle('is-active');
 // });
+
+export default arrayProjects;
