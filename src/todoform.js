@@ -56,6 +56,6 @@ const toDoForm = `<div class="modal is-active is-clipped">
     <button id="delete-modal" class="button">Cancel</button>
   </footer>
 </div>
-</div>`
+</div>`;
 
 export default toDoForm;

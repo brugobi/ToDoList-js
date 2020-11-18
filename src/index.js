@@ -8,6 +8,15 @@ import projectForm from './projectForm';
 
 function displayTasks(array) {
   const todoDisplay = document.getElementById('todoDisplay');
+  todoDisplay.innerHTML = `
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Due Date</th>
+    <th>Priority</th>
+    <th>Project</th>
+    <th>It is Done?</th>
+  </tr>`;
   array.forEach((object) => {
     const tr = document.createElement('tr');
     Object.keys(object).forEach((key) => {
@@ -31,17 +40,13 @@ function displayTasks(array) {
 const arrayOfTasks = [];
 const arrayProject = [];
 
-
-
-
-
 const newTodoBtn = document.getElementById('newTodoFormBtn');
-newTodoBtn.addEventListener('click', (event) => {
+newTodoBtn.addEventListener('click', () => {
   const mainContainer = document.getElementById('modalContainer');
   mainContainer.innerHTML += `${toDoForm}`;
   const formSubmit = document.getElementById('submit-todo-form');
 
-  formSubmit.addEventListener('click', (event) => {
+  formSubmit.addEventListener('click', () => {
     const todoTitle = document.getElementById('todoTitle');
     const selectProject = document.getElementById('selectProject');
     const todoDescription = document.getElementById('todoDescription');
@@ -61,8 +66,6 @@ newTodoBtn.addEventListener('click', (event) => {
     mainContainer.innerHTML = '';
   });
 
-  console.log(document.querySelectorAll('#delete-modal'));
-
   document.querySelectorAll('#delete-modal').forEach(item => {
     item.addEventListener('click', () => {
       mainContainer.innerHTML = '';
@@ -75,12 +78,11 @@ newProjectBtn.addEventListener('click', () => {
   const mainContainer = document.getElementById('modalContainer');
   mainContainer.innerHTML += `${projectForm}`;
   const submitProjectbtn = document.getElementById('submit-project-form');
-  submitProjectbtn.addEventListener('click', (e) => {
+  submitProjectbtn.addEventListener('click', () => {
     const projectTitle = document.getElementById('projectTitle').value.toLowerCase();
     if (!arrayProject.includes(projectTitle)) {
       arrayProject.push(projectTitle);
     }
-    console.log(arrayProject);
     mainContainer.innerHTML = '';
   });
   document.querySelectorAll('#delete-modal').forEach(item => {
