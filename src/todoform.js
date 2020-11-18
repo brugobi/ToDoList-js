@@ -45,7 +45,15 @@ const toDoForm = `
           </div>
         </div>
         <div id="fieldProjects" class="field">
-          <label class="label">Project</label>
+          <label class="label">Projects</label>
+          <div class="control">
+            <div class="select">
+              <select id="selectProject">
+                <option>Select dropdown</option>
+                <option>Add a new project</option>
+              </select>
+            </div>
+          </div>
         </div>
         <div class="field">
           <label class="label">Description</label>
@@ -63,7 +71,6 @@ const toDoForm = `
             </div>
           </div>
         </div>
-      
         <div class="field">
           <div class="control">
             <label class="checkbox">
