@@ -1,8 +1,63 @@
 @charset "utf-8";
-
 @import "~bulma/bulma";
+
+$background: #173F5F;
+$secondary: #20639B;
+$terciary: #3CAEA3;
+$fourth: #F6D55C;
+$fifth: #ED553B;
 
 #todoDisplay {
   width: 100%;
   table-layout: fixed;
+}
+
+body {
+  background-color: $background;
+  min-height: 100vh;
+}
+
+.navbar {
+  background-color: $secondary;
+  position: fixed;
+  min-width: 100%;
+  min-height: 75px;
+}
+
+.main-container {
+  padding: 75px 2rem 0 0rem;
+  max-width: 100%;
+}
+
+.aside-container {
+  background-color: $secondary;
+  padding: 0;
+  padding-left: 2rem;
+  min-height: 100vh;
+}
+
+.aside-menu {
+  position: sticky;
+  top: 0;
+  padding-top: 75px;
+}
+
+.menu-btn {
+  min-width: 45%;
+}
+
+.menu-list a {
+  color: white;
+}
+
+.button.is-primary {
+  background-color: $fifth;
+}
+
+.button.is-warning {
+  background-color: $fourth;
+}
+
+.menu-list a.is-active {
+  background-color: #3CAEA3;
 }

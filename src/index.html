@@ -23,10 +23,10 @@
       </div>
     </nav>
     <div id="modalContainer"></div>
-    <div id="mainContainer" class="container is-full-width">
+    <div id="mainContainer" class="main-container">
       <div class="columns is-3">
-        <div class="column is-one-third p-5">
-          <aside class="menu">
+        <div class="aside-container column is-one-quarter">
+          <aside class="aside-menu menu">
             <ul class="menu-list">
               <li><a>All</a></li>
               <li><a>Today</a></li>
@@ -40,14 +40,14 @@
                 </ul>
               </li>
             </ul>
-            <div class="container is-flex is-justify-content-space-between">
-              <button id="newTodoFormBtn" class="button is-primary">New ToDo</button>
-              <button id="newProjectBtn" class="button is-warning">New Project</button>
+            <div class="container is-flex is-justify-content-space-around">
+              <button id="newTodoFormBtn" class="menu-btn button is-primary">New ToDo</button>
+              <button id="newProjectBtn" class="menu-btn button is-warning">New Project</button>
             </div>
           </aside>
         </div>
-        <div class="column is-two-thirds p-5">
-          <div class="container is-max-desktop is-centered">
+        <div class="column is-three-quarters p-5">
+          <div class="container is-centered">
             <table id="todoDisplay" class="table">
               <tr>
                 <th>Title</th>

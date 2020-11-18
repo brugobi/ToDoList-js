@@ -36,7 +36,6 @@ function displayTasks(array) {
   });
 }
 
-
 const arrayOfTasks = [];
 const arrayProject = [];
 
