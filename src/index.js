@@ -38,33 +38,38 @@ function displayTasks(array) {
     todoDisplay.append(tr);
   });
 }
+const todoConstructor = (title, description, project, duedate, priority) => {
+  const isDone = false;
+  return { title, description, project, duedate, priority, isDone };
+};
 
 const newTodoBtn = document.getElementById('newTodoFormBtn');
 newTodoBtn.addEventListener('click', () => {
+  const modalContainer = document.getElementById('modalContainer');
+  modalContainer.innerHTML = toDoForm;
   let newTodo = {};
-  console.log(newTodo);
-  const modal = document.getElementById('todo-modal-form');
-  modal.classList.toggle('is-active');
+  // const modal = document.getElementById('todo-modal-form');
+  // modal.classList.toggle('is-active');
   const formSubmit = document.getElementById('submit-todo-form');
 
-  formSubmit.addEventListener('click', (event) => {
+  formSubmit.addEventListener('click', () => {
     const todoTitle = document.getElementById('todoTitle');
     const todoDescription = document.getElementById('todoDescription');
     const selectProject = document.getElementById('selectProject');
     const todoDueDate = document.getElementById('todoDueDate');
     const todoPriority = document.getElementById('todoPriority');
 
-    console.log(todoTitle.value);
-
-    const todoConstructor = (title, description, project, duedate, priority) => {
-      const isDone = false;
-      return { title, description, project, duedate, priority, isDone };
-    };
-    newTodo = todoConstructor(todoTitle.value, todoDescription.value, selectProject.value, todoDueDate.value, todoPriority.checked);
-    console.log(newTodo);
-    // arrayOfTasks.push(toDoObject);
+    console.log(todoTitle);
+    newTodo = todoConstructor(
+      todoTitle.value,
+      todoDescription.value,
+      selectProject.value,
+      todoDueDate.value,
+      todoPriority.checked,
+    );
+    arrayOfTasks.push(newTodo);
+    modalContainer.innerHTML = '';
     displayTasks(arrayOfTasks);
-    event.stopPropagation();
   });
 });
 
@@ -82,26 +87,26 @@ newProjectBtn.addEventListener('click', () => {
   });
 });
 
-document.querySelectorAll('#delete-todo-modal').forEach(item => {
-  item.addEventListener('click', () => {
-    const modal = document.getElementById('todo-modal-form');
-    modal.classList.toggle('is-active');
-  });
-});
+// document.querySelectorAll('#delete-todo-modal').forEach(item => {
+//   item.addEventListener('click', () => {
+//     const modal = document.getElementById('todo-modal-form');
+//     modal.classList.toggle('is-active');
+//   });
+// });
 
-document.querySelectorAll('#close-project-modal').forEach(item => {
-  item.addEventListener('click', () => {
-    const modal = document.getElementById('project-modal-form');
-    modal.classList.toggle('is-active');
-  });
-});
+// document.querySelectorAll('#close-project-modal').forEach(item => {
+//   item.addEventListener('click', () => {
+//     const modal = document.getElementById('project-modal-form');
+//     modal.classList.toggle('is-active');
+//   });
+// });
 
-document.getElementById('submit-todo-form').addEventListener('click', () => {
-  const modal = document.getElementById('todo-modal-form');
-  modal.classList.toggle('is-active');
-});
+// document.getElementById('submit-todo-form').addEventListener('click', () => {
+//   const modal = document.getElementById('todo-modal-form');
+//   modal.classList.toggle('is-active');
+// });
 
-document.getElementById('submit-project-form').addEventListener('click', () => {
-  const modal = document.getElementById('project-modal-form');
-  modal.classList.toggle('is-active');
-});
+// document.getElementById('submit-project-form').addEventListener('click', () => {
+//   const modal = document.getElementById('project-modal-form');
+//   modal.classList.toggle('is-active');
+// });
