@@ -22,7 +22,87 @@
         </a>
       </div>
     </nav>
-    <div id="modalContainer"></div>
+    <div id="modalContainer">
+      <div id="todo-modal-form" class="modal is-clipped">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Modal title</p>
+            <button id="delete-todo-modal" class="delete" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            <div id="form" class="container is-max-desktop">
+              <div class="field">
+                <label class="label">Title</label>
+                <div class="control">
+                  <input id="todoTitle" class="input" type="text" placeholder="Title">
+                </div>
+              </div>
+              <div id="fieldProjects" class="field">
+                <label class="label">Project</label>
+              </div>
+              <div class="field">
+                <label class="label">Description</label>
+                <div class="control">
+                  <textarea id="todoDescription" class="textarea" placeholder="Description..."></textarea>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column is-half">
+                  <div class="field">
+                    <label class="label">Due Date</label>
+                    <div class="control">
+                      <input id="todoDueDate" class="input" type="datetime-local" placeholder="Pick a Date">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="field">
+                <div class="control">
+                  <label class="checkbox">
+                    <input id="todoPriority" type="checkbox">
+                    Priority
+                  </label>
+                </div>
+              </div>
+            </div>
+          </section>
+          <footer class="modal-card-foot">
+            <button id="submit-todo-form" class="button is-success">Save changes</button>
+            <button id="delete-todo-modal" class="button">Cancel</button>
+          </footer>
+        </div>
+      </div>
+      <div id="project-modal-form"class="modal is-clipped">
+        <div class="modal-background"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Modal title</p>
+              <button id="close-project-modal" class="delete" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+              <div class="container is-max-desktop">
+                  <div class="field">
+                    <label class="label">Project Title</label>
+                    <div class="control">
+                    <input id="projectTitle" class="input" type="text" placeholder="ProjectTitle">
+                  </div>
+                </div>
+                <div class="field is-grouped">
+                  <div class="control">
+                    <button id="submit-project-form" class="button is-link">Submit</button>
+                  </div>
+                  <div class="control">
+                    <button id="close-project-modal" class="button is-link is-light">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+      </div>
+    </div>
+    </div>
     <div id="mainContainer" class="main-container">
       <div class="columns is-3">
         <div class="aside-container column is-one-quarter">
