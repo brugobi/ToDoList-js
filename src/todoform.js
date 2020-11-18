@@ -1,3 +1,26 @@
+//import { arrayProject } from './index';
+
+const newProject = () => {
+  const arrayProject = [];
+  const controlDiv = document.createElement('div');
+  controlDiv.classList.add('control');
+  const selectDiv = document.createElement('div');
+  selectDiv.classList.add('select');
+  controlDiv.appendChild(selectDiv);
+  const select = document.createElement('select');
+  select.setAttribute('id', 'selectProject');
+  selectDiv.appendChild(select);
+
+  arrayProject.forEach(element => {
+    const option = document.createElement('option');
+    select.appendChild(option);
+  });
+
+  const fieldDiv = document.getElementById('fieldProjects');
+  fieldDiv.appendChild(controlDiv);
+
+};
+
 const toDoForm = `<div class="modal is-active is-clipped">
 <div class="modal-background"></div>
 <div class="modal-card">
@@ -13,16 +36,8 @@ const toDoForm = `<div class="modal is-active is-clipped">
           <input id="todoTitle" class="input" type="text" placeholder="Title">
         </div>
       </div>
-      <div class="field">
+      <div id="fieldProjects" class="field">
         <label class="label">Project</label>
-        <div class="control">
-          <div class="select">
-            <select id="selectProject">
-              <option>Projects</option>
-              <option>Add a new project</option>
-            </select>
-          </div>
-        </div>
       </div>
       <div class="field">
         <label class="label">Description</label>
@@ -58,4 +73,5 @@ const toDoForm = `<div class="modal is-active is-clipped">
 </div>
 </div>`;
 
+newProject();
 export default toDoForm;

@@ -52,15 +52,13 @@ newTodoBtn.addEventListener('click', () => {
     const todoDueDate = document.getElementById('todoDueDate');
     const todoPriority = document.getElementById('todoPriority');
 
-    const newTodo = {
-      title: todoTitle.value,
-      description: todoDescription.value,
-      duedate: todoDueDate.value,
-      priority: todoPriority.checked,
-      project: selectProject.value,
-      isdone: false,
+    const newTodo = (title, description, duedate, priority, project) => {
+      const isDone = false;
+      return { title, description, duedate, priority, project, isDone };
     };
-    arrayOfTasks.push(newTodo);
+    const toDoObject = newTodo(todoTitle.value, todoDescription.value, todoDueDate.value, selectProject.value, todoPriority.checked);
+    console.log(toDoObject);
+    arrayOfTasks.push(toDoObject);
     displayTasks(arrayOfTasks);
     mainContainer.innerHTML = '';
   });
