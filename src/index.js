@@ -9,6 +9,18 @@ import projectForm from './projectForm';
 const arrayOfTasks = [];
 const arrayProject = [];
 
+const todoConstructor = (title, description, project, duedate, priority) => {
+  const isDone = false;
+  return {
+    title,
+    description,
+    project,
+    duedate,
+    priority,
+    isDone,
+  };
+};
+
 function displayTasks(array) {
   const todoDisplay = document.getElementById('todoDisplay');
   todoDisplay.innerHTML = `
@@ -38,18 +50,12 @@ function displayTasks(array) {
     todoDisplay.append(tr);
   });
 }
-const todoConstructor = (title, description, project, duedate, priority) => {
-  const isDone = false;
-  return { title, description, project, duedate, priority, isDone };
-};
 
 const newTodoBtn = document.getElementById('newTodoFormBtn');
 newTodoBtn.addEventListener('click', () => {
   const modalContainer = document.getElementById('modalContainer');
   modalContainer.innerHTML = toDoForm;
   let newTodo = {};
-  // const modal = document.getElementById('todo-modal-form');
-  // modal.classList.toggle('is-active');
   const formSubmit = document.getElementById('submit-todo-form');
 
   formSubmit.addEventListener('click', () => {
@@ -71,19 +77,29 @@ newTodoBtn.addEventListener('click', () => {
     modalContainer.innerHTML = '';
     displayTasks(arrayOfTasks);
   });
+  document.querySelectorAll('#delete-todo-modal').forEach(item => {
+    item.addEventListener('click', () => {
+      modalContainer.innerHTML = '';
+    });
+  });
 });
 
 const newProjectBtn = document.getElementById('newProjectBtn');
 newProjectBtn.addEventListener('click', () => {
-  const modal = document.getElementById('project-modal-form');
-  modal.classList.toggle('is-active');
+  const modalContainer = document.getElementById('modalContainer');
+  modalContainer.innerHTML = projectForm;
   const submitProjectbtn = document.getElementById('submit-project-form');
   submitProjectbtn.addEventListener('click', () => {
     const projectTitle = document.getElementById('projectTitle').value.toLowerCase();
     if (!arrayProject.includes(projectTitle)) {
       arrayProject.push(projectTitle);
     }
-    document.getElementById('projectTitle').value = '';
+    modalContainer.innerHTML = '';
+  });
+  document.querySelectorAll('#close-project-modal').forEach(item => {
+    item.addEventListener('click', () => {
+      modalContainer.innerHTML = '';
+    });
   });
 });
 
@@ -94,12 +110,12 @@ newProjectBtn.addEventListener('click', () => {
 //   });
 // });
 
-// document.querySelectorAll('#close-project-modal').forEach(item => {
-//   item.addEventListener('click', () => {
-//     const modal = document.getElementById('project-modal-form');
-//     modal.classList.toggle('is-active');
-//   });
-// });
+document.querySelectorAll('#close-project-modal').forEach(item => {
+  item.addEventListener('click', () => {
+    const modal = document.getElementById('project-modal-form');
+    modal.classList.toggle('is-active');
+  });
+});
 
 // document.getElementById('submit-todo-form').addEventListener('click', () => {
 //   const modal = document.getElementById('todo-modal-form');
