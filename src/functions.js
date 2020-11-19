@@ -88,6 +88,12 @@ function displayAllTasks(array) {
 
 function displayTasksforToday(array) {
   let today = new Date();
+  let day = today.getDate();
+  let year = today.getFullYear();
+  let month = today.getMonth();
+
+  let date = `${year}${month}${day}`;
+
   let arrayTodayTask = [];
   for (let i = 0; i < array.length; i++) {
     if (array[i].duedate === today) {
