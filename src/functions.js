@@ -82,6 +82,21 @@ function displayTasks(array) {
   });
 }
 
+function displayAllTasks(array) {
+  displayTasks(array);
+};
+
+function displayTasksforToday(array) {
+  let today = new Date();
+  let arrayTodayTask = [];
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].duedate === today) {
+      arrayTodayTask.push(array[i]);
+    };
+  };
+  displayTasks(arrayTodayTask);
+};
+
 function createTodoForm(todoArray, arrayProjects) {
   const modalContainer = document.getElementById('modalContainer');
   modalContainer.innerHTML = `${firstPart}${appendProjectsToProjectForm(arrayProjects).innerHTML}${lastPart}`;
@@ -114,4 +129,4 @@ function createTodoForm(todoArray, arrayProjects) {
   });
 }
 
-export { createProjectForm, createTodoForm, displayTasks };
+export { createProjectForm, createTodoForm, displayTasks, displayAllTasks, displayTasksforToday };
