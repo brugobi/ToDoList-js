@@ -1,6 +1,3 @@
-// import arrayProjects from './index';
-import projectForm from './projectForm';
-import { arrayProjects } from './variables';
 
 // function createEl(type, cl = '') {
 //   const el = document.createElement(type);
@@ -9,27 +6,41 @@ import { arrayProjects } from './variables';
 //   }
 //   return el;
 // }
-
-const appendProjectsToForm = (projects) => {
-  const wrapper = document.createElement('div');
-  const select = document.createElement('select');
-  select.setAttribute('id', 'selectProject');
-
-  projects.forEach((element) => {
-    const option = document.createElement('option');
-    option.innerText = element;
-    select.appendChild(option);
-  });
-  wrapper.appendChild(select);
-  return wrapper;
-};
-const projectPart = appendProjectsToForm(arrayProjects);
+const projectForm = `
+<div id="project-modal-form"class="modal is-active is-clipped">
+<div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">New Project</p>
+      <button id="close-project-modal" class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="container is-max-desktop">
+          <div class="field">
+            <label class="label">Project Title</label>
+            <div class="control">
+            <input id="projectTitle" class="input" type="text" placeholder="ProjectTitle">
+          </div>
+        </div>
+        <div class="field is-grouped">
+          <div class="control">
+            <button id="submit-project-form" class="button is-link">Submit</button>
+          </div>
+          <div class="control">
+            <button id="close-project-modal" class="button is-link is-light">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+`;
 const firstPart = `
 <div id="todo-modal-form" class="modal is-active is-clipped">
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">Modal title</p>
+      <p class="modal-card-title">Add a new To Do:</p>
       <button id="delete-todo-modal" class="delete" aria-label="close"></button>
     </header>
     <section class="modal-card-body">
@@ -44,7 +55,6 @@ const firstPart = `
           <label class="label">Projects</label>
           <div class="control">
             <div class="select">`;
-
 const lastPart = `
             </div>
           </div>
@@ -82,7 +92,4 @@ const lastPart = `
   </div>
 </div>`;
 
-const todoForm = `${firstPart}${projectPart.innerHTML}${lastPart}`;
-
-// newProject();
-export default todoForm;
+export { firstPart, lastPart, projectForm };
