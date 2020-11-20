@@ -3,6 +3,7 @@ import '@fortawesome/fontawesome-free/js/fontawesome';
 import '@fortawesome/fontawesome-free/js/solid';
 import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
+import { compareAsc, format } from 'date-fns';
 import { createProjectForm, createTodoForm, displayTasks, displayAllTasks, displayTasksforToday } from './functions';
 
 const arrayOfProjects = ['hello', 'world'];
@@ -68,10 +69,10 @@ const arrayOfTasks = [
     title: 'ASD', description: 'ASD', duedate: '2020-01-01T00:00', priority: true, project: 'hello', isDone: false,
   },
   {
-    title: 'ASD', description: 'ASD', duedate: '2020-01-01T00:00', priority: true, project: 'hello', isDone: false,
+    title: 'ASD', description: 'ASD', duedate: '2020-11-20T00:00', priority: true, project: 'hello', isDone: false,
   },
   {
-    title: 'ASD', description: 'ASD', duedate: '19/11/2020', priority: true, project: 'hello', isDone: false,
+    title: 'ASD', description: 'ASD', duedate: '2020-11-20T03:30', priority: true, project: 'hello', isDone: false,
   },
 ];
 

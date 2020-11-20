@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmllWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// const FileLoader = require('file-loader');
+
 module.exports = {
   entry: './src/index.js',
   output: {

@@ -1,3 +1,4 @@
+import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 import { firstPart, lastPart, projectForm } from './DOM';
 
 const todoConstructor = (title, description, duedate, priority, project) => {
@@ -21,6 +22,20 @@ const appendProjectsToProjectForm = (projects) => {
     const option = document.createElement('option');
     option.innerText = element;
     select.appendChild(option);
+
+
+    // const spanElem = document.createElement('span');
+    // spanElem.setAttribute('id', 'deleteItem');
+    // spanElem.innerText = 'delete';
+    // option.appendChild(spanElem);
+
+    // spanElem.addEventListener('click', deleteItem, false);
+
+    // function deleteItem() {
+    //   this.parentNode.remove();
+    // };
+
+
   });
   wrapper.appendChild(select);
   return wrapper;
@@ -62,6 +77,7 @@ function displayTasks(array) {
     <th>Priority</th>
     <th>Project</th>
     <th>It is Done?</th>
+    <th></th>
   </tr>`;
   array.forEach((object) => {
     const tr = document.createElement('tr');
@@ -77,7 +93,24 @@ function displayTasks(array) {
         td.innerText = object[key];
         tr.append(td);
       }
+      
     });
+
+    //new code
+    const spanElem = document.createElement('a');
+    spanElem.classList.add('delete');
+    spanElem.setAttribute('id', 'deleteItem');
+    //spanElem.innerText = 'delete';
+    const td = document.createElement('td');
+    td.appendChild(spanElem)
+    tr.append(td);
+
+    spanElem.addEventListener('click', deleteItem, false);
+    function deleteItem() {
+      this.parentNode.parentNode.remove();
+    }
+    //finish
+    
     todoDisplay.append(tr);
   });
 }
@@ -87,14 +120,14 @@ function displayAllTasks(array) {
 };
 
 function displayTasksforToday(array) {
-
-  const today = `${new Date().getDate()}-${new Date().getFullYear()}-${new Date().getMonth()}`;
-  console.log(today);
+  const date = `${format(new Date(), 'yyyy-M-d')}`;
   let arrayTodayTask = [];
   for (let i = 0; i < array.length; i++) {
-    if (array[i].duedate === today) {
+    //let x = array[i].duedate;
+    if (array[i].duedate.includes(date)) {
       arrayTodayTask.push(array[i]);
     };
+    //console.log(x);
   };
   displayTasks(arrayTodayTask);
 };
