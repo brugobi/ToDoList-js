@@ -1,8 +1,38 @@
-import { format, formatDistance, formatRelative, subDays } from 'date-fns';
+import {
+  format,
+  formatDistance,
+  formatRelative,
+  subDays,
+} from 'date-fns';
+
 import { firstPart, lastPart, projectForm } from './DOM';
 
-const todoConstructor = (title, description, duedate, priority, project) => {
+function deleteTodoObjFromArray(array, domId) {
+  const newArray = array.filter(object => object.id !== parseInt(domId, 10));
+  return newArray;
+}
+
+function deleteTodoHTML(target) {
+  target.parentNode.parentNode.remove();
+}
+
+function lastId(array) {
+  let biggestID = 0;
+  if (array === undefined || array.length === 0) {
+    biggestID = 1;
+  } else {
+    array.forEach((object) => {
+      if (object.id > biggestID) {
+        biggestID = object.id;
+      }
+    });
+  }
+  return biggestID;
+}
+
+const todoConstructor = (title, description, duedate, priority, project, id) => {
   const isDone = false;
+  id += 1;
   return {
     title,
     description,
@@ -10,6 +40,7 @@ const todoConstructor = (title, description, duedate, priority, project) => {
     priority,
     project,
     isDone,
+    id,
   };
 };
 
@@ -22,21 +53,8 @@ const appendProjectsToProjectForm = (projects) => {
     const option = document.createElement('option');
     option.innerText = element;
     select.appendChild(option);
-
-
-    // const spanElem = document.createElement('span');
-    // spanElem.setAttribute('id', 'deleteItem');
-    // spanElem.innerText = 'delete';
-    // option.appendChild(spanElem);
-
-    // spanElem.addEventListener('click', deleteItem, false);
-
-    // function deleteItem() {
-    //   this.parentNode.remove();
-    // };
-
-
   });
+
   wrapper.appendChild(select);
   return wrapper;
 };
@@ -79,6 +97,9 @@ function displayTasks(array) {
     <th>It is Done?</th>
     <th></th>
   </tr>`;
+  if (array === undefined || array.length === 0) {
+    return array;
+  }
   array.forEach((object) => {
     const tr = document.createElement('tr');
     Object.keys(object).forEach((key) => {
@@ -89,48 +110,43 @@ function displayTasks(array) {
         checkbox.setAttribute('type', 'checkbox');
         td.append(checkbox);
         tr.append(td);
-      } else {
+      } else if (key !== 'id') {
         td.innerText = object[key];
         tr.append(td);
       }
-      
     });
 
-    //new code
-    const spanElem = document.createElement('a');
-    spanElem.classList.add('delete');
-    spanElem.setAttribute('id', 'deleteItem');
-    //spanElem.innerText = 'delete';
+    const deleteBtn = document.createElement('a');
+    deleteBtn.classList.add('delete');
+    deleteBtn.setAttribute('id', `${object.id}`);
     const td = document.createElement('td');
-    td.appendChild(spanElem)
+    td.appendChild(deleteBtn);
     tr.append(td);
 
-    spanElem.addEventListener('click', deleteItem, false);
-    function deleteItem() {
-      this.parentNode.parentNode.remove();
-    }
-    //finish
-    
     todoDisplay.append(tr);
   });
+  return array;
 }
 
 function displayAllTasks(array) {
   displayTasks(array);
-};
+  return array;
+}
 
 function displayTasksforToday(array) {
+  if (array === undefined || array.length === 0) {
+    return array;
+  }
   const date = `${format(new Date(), 'yyyy-M-d')}`;
-  let arrayTodayTask = [];
-  for (let i = 0; i < array.length; i++) {
-    //let x = array[i].duedate;
+  const arrayTodayTask = [];
+  for (let i = 0; i < array.length; i += 1) {
     if (array[i].duedate.includes(date)) {
       arrayTodayTask.push(array[i]);
-    };
-    //console.log(x);
-  };
+    }
+  }
   displayTasks(arrayTodayTask);
-};
+  return array;
+}
 
 function createTodoForm(todoArray, arrayProjects) {
   const modalContainer = document.getElementById('modalContainer');
@@ -152,10 +168,13 @@ function createTodoForm(todoArray, arrayProjects) {
       todoDueDate.value,
       todoPriority.checked,
       selectProject.value,
+      lastId(todoArray),
     );
+    if (todoArray === undefined) {
+      todoArray = [];
+    }
     todoArray.push(newTodo);
     modalContainer.innerHTML = '';
-    displayTasks(todoArray);
   });
   document.querySelectorAll('#delete-todo-modal').forEach(item => {
     item.addEventListener('click', () => {
@@ -164,4 +183,12 @@ function createTodoForm(todoArray, arrayProjects) {
   });
 }
 
-export { createProjectForm, createTodoForm, displayTasks, displayAllTasks, displayTasksforToday };
+export {
+  createProjectForm,
+  createTodoForm,
+  displayTasks,
+  displayAllTasks,
+  displayTasksforToday,
+  deleteTodoObjFromArray,
+  deleteTodoHTML,
+};
