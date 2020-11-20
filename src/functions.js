@@ -71,6 +71,7 @@ function createProjectForm(globalArray) {
     }
     const ul = document.getElementById('aside-project-list');
     const li = document.createElement('li');
+    li.setAttribute('id', 'btnbyProject');
     const a = document.createElement('a');
     a.innerText = projectTitle;
     li.append(a);
@@ -108,6 +109,7 @@ function displayTasks(array) {
         const td = document.createElement('td');
         const checkbox = document.createElement('input');
         checkbox.setAttribute('type', 'checkbox');
+        checkbox.setAttribute('id', 'btncheckbox');
         td.append(checkbox);
         tr.append(td);
       } else if (key !== 'id') {
@@ -131,7 +133,38 @@ function displayTasks(array) {
 function displayAllTasks(array) {
   displayTasks(array);
   return array;
-}
+};
+
+//const arrayOfProjects = ['hello', 'world'];
+function loadProjects(arrayOfProjects) {
+  const ul = document.getElementById('aside-project-list');
+  arrayOfProjects.forEach(project => {
+    const li = document.createElement('li');
+    ul.appendChild(li);
+    const a = document.createElement('a');
+    a.setAttribute('id', 'btnbyProject');
+    li.appendChild(a);
+    a.innerHTML = project;
+  });
+};
+
+function displaybyProject(array) {
+  // if (array === undefined || array.length === 0) {
+  //   return array;
+  // }
+  // const parent = document.getElementById('aside-project-list');
+  // const arraybyProject = [];
+  // for (let i = 0; i < array.length; i += 1) {
+  //   const child = parent.childNodes[i];
+  //   if (array[i].project === child.textContent) {
+  //     arraybyProject.push(array[i]);
+  //   }
+  // }
+  // displayTasks(arraybyProject);
+  // return array;
+  const btnbyProject = document.getElementById('btnbyProject');
+  console.log(btnbyProject);
+};
 
 function displayTasksforToday(array) {
   if (array === undefined || array.length === 0) {
@@ -188,7 +221,9 @@ export {
   createTodoForm,
   displayTasks,
   displayAllTasks,
+  displaybyProject,
   displayTasksforToday,
   deleteTodoObjFromArray,
   deleteTodoHTML,
+  loadProjects,
 };

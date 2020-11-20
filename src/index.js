@@ -8,8 +8,10 @@ import {
   createTodoForm,
   displayAllTasks,
   displayTasksforToday,
+  displaybyProject,
   deleteTodoObjFromArray,
   deleteTodoHTML,
+  loadProjects,
 }
   from './functions';
 
@@ -70,3 +72,15 @@ btnTodayTasks.addEventListener('click', () => {
     return arrayOfTasks;
   });
 });
+
+window.addEventListener('DOMContentLoaded', (event) => {
+  loadProjects(arrayOfProjects);
+  //const btnbyProject = document.getElementById('btnbyProject');
+  const btnbyProject = document.getElementById('aside-project-list');
+  btnbyProject.addEventListener('click', (e) => {
+    
+    console.log(e.target.innerText);
+  });
+});
+
+
