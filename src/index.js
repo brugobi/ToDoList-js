@@ -25,10 +25,13 @@ if (localStorage.getItem('arrayOfProjects') !== null) {
   localStorage.setItem('arrayOfProjects', JSON.stringify(['hello', 'world']));
   arrayOfProjects = JSON.parse(localStorage.getItem('arrayOfProjects'));
 }
-
-console.log(arrayOfProjects);
-// localStorage.setItem('arrayOfProjects', JSON.stringify(arrayOfProjects));
-let arrayOfTodos = JSON.parse(localStorage.getItem('arrayOfTodos') || '[{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":1},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":2},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":3},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":4},{"title":"ASD","description":"ASD","duedate":"2020-11-21T00:00","priority":true,"project":"hello","isDone":false,"id":5},{"title":"ASD","description":"ASD","duedate":"2020-11-21T03:30","priority":true,"project":"hello","isDone":false,"id":6}]');
+let arrayOfTodos = [];
+if (localStorage.getItem('arrayOfTodos') !== null) {
+  arrayOfTodos = JSON.parse(localStorage.getItem('arrayOfTodos'));
+} else {
+  localStorage.setItem('arrayOfTodos', JSON.stringify([{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":1},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":2},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":3},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":4},{"title":"ASD","description":"ASD","duedate":"2020-11-21T00:00","priority":true,"project":"hello","isDone":false,"id":5},{"title":"ASD","description":"ASD","duedate":"2020-11-21T03:30","priority":true,"project":"hello","isDone":false,"id":6}]));
+  arrayOfTodos = JSON.parse(localStorage.getItem('arrayOfTodos'));
+}
 
 function addEventListenerByClass(className, event, fn) {
   const list = document.getElementsByClassName(className);
@@ -37,8 +40,8 @@ function addEventListenerByClass(className, event, fn) {
   }
 }
 const newTodoBtn = document.getElementById('newTodoFormBtn');
-newTodoBtn.addEventListener('click', (e) => {
-  displayToDoModal(e);
+newTodoBtn.addEventListener('click', () => {
+  displayToDoModal();
 });
 
 const newProjectBtn = document.getElementById('newProjectBtn');
@@ -51,19 +54,19 @@ const btnAllTasks = document.getElementById('btnAllTasks');
 btnAllTasks.addEventListener('click', () => {
   displayTasks();
   addEventListenerByClass('delete', 'click', (e) => {
-    arrayOfTasks = deleteTodoObjFromArray(arrayOfTasks, e.target.id);
-    displayTasks(arrayOfTasks);
-    return arrayOfTasks;
+    arrayOfTodos = deleteTodoObjFromArray(arrayOfTodos, e.target.id);
+    displayTasks(arrayOfTodos);
+    return arrayOfTodos;
   });
 });
 
 const btnTodayTasks = document.getElementById('btnTodayTasks');
 btnTodayTasks.addEventListener('click', () => {
-  displayTasksforToday(arrayOfTasks);
+  displayTasksforToday(arrayOfTodos);
   addEventListenerByClass('delete', 'click', (e) => {
-    arrayOfTasks = deleteTodoObjFromArray(arrayOfTasks, e.target.id);
+    arrayOfTodos = deleteTodoObjFromArray(arrayOfTodos, e.target.id);
     deleteTodoHTML(e.target);
-    return arrayOfTasks;
+    return arrayOfTodos;
   });
 });
 

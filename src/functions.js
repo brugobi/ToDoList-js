@@ -187,7 +187,7 @@ function displayTasksforToday() {
   return array;
 }
 
-function submitTodoForm() {
+function submitTodoForm(e) {
   let newTodo = {};
   let todosArray = fetchTodoArrayFromLocalHost();
   const todoTitle = document.getElementById('todoTitle');
@@ -207,26 +207,20 @@ function submitTodoForm() {
   if (todosArray === undefined) {
     todosArray = [];
   }
-  console.log(newTodo);
   todosArray.push(newTodo);
   saveTodoArrayInLocalHost(todosArray);
-  closeModal();
+  closeModal(e);
 }
 
-function displayToDoModal(e) {
-
+function displayToDoModal() {
   createTodoForm(fetchProjectArrayFromLocalHost());
-  console.log(fetchProjectArrayFromLocalHost());
-  // const formSubmit = document.getElementById('submit-todo-form');
-  // console.log(formSubmit.bubbles);
-  // formSubmit.addEventListener('click', (e) => {
-  //   console.log(e);
-  //   e.preventDefault();
-  //   submitTodoForm();
-  // });
-  // document.querySelectorAll('#delete-todo-modal').forEach(item => {
-  //   item.addEventListener('click', closeModal());
-  // });
+  const formSubmit = document.getElementById('submit-todo-form');
+  formSubmit.addEventListener('click', (e) => {
+    submitTodoForm(e);
+  });
+  document.querySelectorAll('#delete-todo-modal').forEach(item => {
+    item.addEventListener('click', e => { closeModal(e); });
+  });
 }
 
 

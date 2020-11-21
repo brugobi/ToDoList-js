@@ -92,7 +92,7 @@ const lastPart = `
   </div>
 </div>`;
 
-const appendProjectsToProjectForm = (projects) => {
+const appendProjectsToTodoForm = (projects) => {
   const wrapper = document.createElement('div');
   const select = document.createElement('select');
   select.setAttribute('id', 'selectProject');
@@ -109,7 +109,7 @@ const appendProjectsToProjectForm = (projects) => {
 
 function createTodoForm(arrayProjects) {
   const modalContainer = document.getElementById('modalContainer');
-  modalContainer.innerHTML = `${firstPart}${appendProjectsToProjectForm(arrayProjects).innerHTML}${lastPart}`;
+  modalContainer.innerHTML = `${firstPart}${appendProjectsToTodoForm(arrayProjects).innerHTML}${lastPart}`;
   document.getElementById('todoTitle').focus();
 
   bulmaCalendar.attach('[type="date"]', {
@@ -118,10 +118,12 @@ function createTodoForm(arrayProjects) {
     clearButton: false,
     showHeader: false,
     showFooter: false,
+    startDate: new Date(),
   });
 }
 
-function closeModal() {
+function closeModal(e) {
+  e.stopPropagation();
   const modalContainer = document.getElementById('modalContainer');
   modalContainer.innerHTML = '';
 }
