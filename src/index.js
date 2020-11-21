@@ -58,7 +58,7 @@ btnAllTasks.addEventListener('click', () => {
   displayAllTasks(arrayOfTasks);
   addEventListenerByClass('delete', 'click', (e) => {
     arrayOfTasks = deleteTodoObjFromArray(arrayOfTasks, e.target.id);
-    deleteTodoHTML(e.target);
+    displayAllTasks(arrayOfTasks);
     return arrayOfTasks;
   });
 });
@@ -75,12 +75,10 @@ btnTodayTasks.addEventListener('click', () => {
 
 window.addEventListener('DOMContentLoaded', (event) => {
   loadProjects(arrayOfProjects);
-  //const btnbyProject = document.getElementById('btnbyProject');
+  // const btnbyProject = document.getElementById('btnbyProject');
   const btnbyProject = document.getElementById('aside-project-list');
   btnbyProject.addEventListener('click', (e) => {
-    
+    console.log(btnbyProject.textContent);
     console.log(e.target.innerText);
   });
 });
-
-

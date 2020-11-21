@@ -110,6 +110,7 @@ function displayTasks(array) {
         const checkbox = document.createElement('input');
         checkbox.setAttribute('type', 'checkbox');
         checkbox.setAttribute('id', 'btncheckbox');
+        checkbox.setAttribute('onclick', 'changeIsDone()');
         td.append(checkbox);
         tr.append(td);
       } else if (key !== 'id') {
