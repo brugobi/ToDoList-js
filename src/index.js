@@ -3,7 +3,7 @@ import '@fortawesome/fontawesome-free/js/fontawesome';
 import {
   createProjectForm,
   displayToDoModal,
-  displayTasks,
+  displayAllTasks,
   displayTasksforToday,
   deleteTodoObjFromArray,
   deleteTodoHTML,
@@ -52,12 +52,7 @@ newProjectBtn.addEventListener('click', () => {
 
 const btnAllTasks = document.getElementById('btnAllTasks');
 btnAllTasks.addEventListener('click', () => {
-  displayTasks();
-  addEventListenerByClass('delete', 'click', (e) => {
-    arrayOfTodos = deleteTodoObjFromArray(arrayOfTodos, e.target.id);
-    displayTasks(arrayOfTodos);
-    return arrayOfTodos;
-  });
+  displayAllTasks();
 });
 
 const btnTodayTasks = document.getElementById('btnTodayTasks');

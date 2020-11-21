@@ -1,11 +1,5 @@
 import bulmaCalendar from 'bulma-calendar/dist/js/bulma-calendar';
-// function createEl(type, cl = '') {
-//   const el = document.createElement(type);
-//   if (cl !== '') {
-//     el.classList += cl;
-//   }
-//   return el;
-// }
+
 const projectForm = `
 <div id="project-modal-form"class="modal is-active is-clipped">
 <div class="modal-background"></div>
@@ -122,10 +116,56 @@ function createTodoForm(arrayProjects) {
   });
 }
 
+function displayTasks(array) {
+  const todoDisplay = document.getElementById('todoDisplay');
+  todoDisplay.innerHTML = `
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Due Date</th>
+    <th>Priority</th>
+    <th>Project</th>
+    <th>It is Done?</th>
+    <th></th>
+  </tr>`;
+  array.forEach((object) => {
+    const tr = document.createElement('tr');
+    Object.keys(object).forEach((key) => {
+      const td = document.createElement('td');
+      if (key === 'isDone') {
+        const td = document.createElement('td');
+        const checkbox = document.createElement('input');
+        checkbox.setAttribute('type', 'checkbox');
+        checkbox.setAttribute('id', 'btncheckbox');
+        td.append(checkbox);
+        tr.append(td);
+      } else if (key !== 'id') {
+        td.innerText = object[key];
+        tr.append(td);
+      }
+    });
+
+    const deleteBtn = document.createElement('a');
+    deleteBtn.classList.add('delete');
+    deleteBtn.setAttribute('id', `${object.id}`);
+    const td = document.createElement('td');
+    td.appendChild(deleteBtn);
+    tr.append(td);
+
+    todoDisplay.append(tr);
+  });
+  return array;
+}
+
 function closeModal(e) {
   e.stopPropagation();
   const modalContainer = document.getElementById('modalContainer');
   modalContainer.innerHTML = '';
 }
 
-export { createTodoForm, closeModal, projectForm };
+export {
+  createTodoForm,
+  closeModal,
+  projectForm,
+  displayTasks,
+};

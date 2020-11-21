@@ -1,26 +1,24 @@
 import {
   format,
-  formatDistance,
-  formatRelative,
-  subDays,
 } from 'date-fns';
 
 
-import { createTodoForm, closeModal, projectForm } from './DOM';
+import { createTodoForm, closeModal, projectForm, displayTasks } from './DOM';
 
-const fetchTodoArrayFromLocalHost = () => {
+const fetchTodoArrayFromLocalStorage = () => {
   const todoArray = JSON.parse(localStorage.getItem('arrayOfTodos') || '[]');
   return todoArray;
 };
-const fetchProjectArrayFromLocalHost = () => {
+const fetchProjectArrayFromLocalStorage = () => {
   const projectsArray = JSON.parse(localStorage.getItem('arrayOfProjects') || '[]');
   return projectsArray;
 };
 
-const saveTodoArrayInLocalHost = (todoArray) => {
+const saveTodoArrayInLocalStorage = (todoArray) => {
+  console.log(todoArray);
   localStorage.setItem('arrayOfTodos', JSON.stringify(todoArray));
 };
-const saveProjectArrayInLocalHost = (projectsArray) => {
+const saveProjectArrayInLocalStorage = (projectsArray) => {
   localStorage.setItem('arrayOfProjects', JSON.stringify(projectsArray));
 };
 
@@ -29,12 +27,15 @@ function deleteTodoObjFromArray(array, domId) {
   return newArray;
 }
 
-function deleteTodoHTML(target) {
-  target.parentNode.parentNode.remove();
+function deleteTodo(e, callback) {
+  const todoArray = fetchTodoArrayFromLocalStorage()
+    .filter(object => object.id !== parseInt(e.target.id, 10));
+  saveTodoArrayInLocalStorage(todoArray);
+  callback();
 }
 
-function changeIsDone(event) {
-  console.log(event);
+function deleteTodoHTML(target) {
+  target.parentNode.parentNode.remove();
 }
 
 function lastId(todosArray) {
@@ -92,53 +93,12 @@ function createProjectForm(globalArray) {
   });
 }
 
-function displayTasks(array) {
-  const todoDisplay = document.getElementById('todoDisplay');
-  todoDisplay.innerHTML = `
-  <tr>
-    <th>Title</th>
-    <th>Description</th>
-    <th>Due Date</th>
-    <th>Priority</th>
-    <th>Project</th>
-    <th>It is Done?</th>
-    <th></th>
-  </tr>`;
-  if (array === undefined || array.length === 0) {
-    return array;
-  }
-  array.forEach((object) => {
-    const tr = document.createElement('tr');
-    Object.keys(object).forEach((key) => {
-      const td = document.createElement('td');
-      if (key === 'isDone') {
-        const td = document.createElement('td');
-        const checkbox = document.createElement('input');
-        checkbox.setAttribute('type', 'checkbox');
-        checkbox.setAttribute('id', 'btncheckbox');
-        checkbox.setAttribute('onclick', 'changeIsDone(event)');
-        td.append(checkbox);
-        tr.append(td);
-      } else if (key !== 'id') {
-        td.innerText = object[key];
-        tr.append(td);
-      }
-    });
-
-    const deleteBtn = document.createElement('a');
-    deleteBtn.classList.add('delete');
-    deleteBtn.setAttribute('id', `${object.id}`);
-    const td = document.createElement('td');
-    td.appendChild(deleteBtn);
-    tr.append(td);
-
-    todoDisplay.append(tr);
-  });
-  return array;
-}
-
 function displayAllTasks() {
-  displayTasks(fetchTodoArrayFromLocalHost());
+  const todoArray = fetchTodoArrayFromLocalStorage();
+  displayTasks(todoArray);
+  document.querySelectorAll('.delete').forEach(item => {
+    item.addEventListener('click', (e) => { deleteTodo(e, displayAllTasks); });
+  });
 }
 
 function loadProjects(arrayOfProjects) {
@@ -172,7 +132,7 @@ function displaybyProject(array) {
 }
 
 function displayTasksforToday() {
-  const array = fetchTodoArrayFromLocalHost();
+  const array = fetchTodoArrayFromLocalStorage();
   if (array === undefined || array.length === 0) {
     return array;
   }
@@ -189,7 +149,7 @@ function displayTasksforToday() {
 
 function submitTodoForm(e) {
   let newTodo = {};
-  let todosArray = fetchTodoArrayFromLocalHost();
+  let todosArray = fetchTodoArrayFromLocalStorage();
   const todoTitle = document.getElementById('todoTitle');
   const todoDescription = document.getElementById('todoDescription');
   const selectProject = document.getElementById('selectProject');
@@ -208,12 +168,12 @@ function submitTodoForm(e) {
     todosArray = [];
   }
   todosArray.push(newTodo);
-  saveTodoArrayInLocalHost(todosArray);
+  saveTodoArrayInLocalStorage(todosArray);
   closeModal(e);
 }
 
 function displayToDoModal() {
-  createTodoForm(fetchProjectArrayFromLocalHost());
+  createTodoForm(fetchProjectArrayFromLocalStorage());
   const formSubmit = document.getElementById('submit-todo-form');
   formSubmit.addEventListener('click', (e) => {
     submitTodoForm(e);
@@ -222,7 +182,6 @@ function displayToDoModal() {
     item.addEventListener('click', e => { closeModal(e); });
   });
 }
-
 
 export {
   createProjectForm,
