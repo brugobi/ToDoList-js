@@ -70,7 +70,7 @@ const lastPart = `
             <div class="field">
               <label class="label">Due Date</label>
               <div class="control">
-                <input id="todoDueDate" class="input" type="datetime-local" placeholder="Pick a Date">
+                <input id="todoDueDate" type="date">
               </div>
             </div>
           </div>
@@ -91,5 +91,6 @@ const lastPart = `
     </footer>
   </div>
 </div>`;
+
 
 export { firstPart, lastPart, projectForm };

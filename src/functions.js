@@ -4,8 +4,18 @@ import {
   formatRelative,
   subDays,
 } from 'date-fns';
+import bulmaCalendar from 'bulma-calendar/dist/js/bulma-calendar';
 
 import { firstPart, lastPart, projectForm } from './DOM';
+
+const fetchArrayFromLocalHost = () => {
+  const todoArray = JSON.parse(localStorage.getItem('arrayOfTasks') || '[]');
+  return todoArray;
+};
+
+const saveArrayInLocalHost = (todoArray) => {
+  localStorage.setItem('arrayOfTasks', JSON.stringify(todoArray));
+};
 
 function deleteTodoObjFromArray(array, domId) {
   const newArray = array.filter(object => object.id !== parseInt(domId, 10));
@@ -14,6 +24,10 @@ function deleteTodoObjFromArray(array, domId) {
 
 function deleteTodoHTML(target) {
   target.parentNode.parentNode.remove();
+}
+
+function changeIsDone(event) {
+  console.log(event);
 }
 
 function lastId(array) {
@@ -110,7 +124,7 @@ function displayTasks(array) {
         const checkbox = document.createElement('input');
         checkbox.setAttribute('type', 'checkbox');
         checkbox.setAttribute('id', 'btncheckbox');
-        checkbox.setAttribute('onclick', 'changeIsDone()');
+        checkbox.setAttribute('onclick', 'changeIsDone(event)');
         td.append(checkbox);
         tr.append(td);
       } else if (key !== 'id') {
@@ -131,12 +145,11 @@ function displayTasks(array) {
   return array;
 }
 
-function displayAllTasks(array) {
+function displayAllTasks() {
+  const array = JSON.parse(localStorage.getItem('arrayOfTasks') || '[]');
   displayTasks(array);
-  return array;
-};
+}
 
-//const arrayOfProjects = ['hello', 'world'];
 function loadProjects(arrayOfProjects) {
   const ul = document.getElementById('aside-project-list');
   arrayOfProjects.forEach(project => {
@@ -147,7 +160,7 @@ function loadProjects(arrayOfProjects) {
     li.appendChild(a);
     a.innerHTML = project;
   });
-};
+}
 
 function displaybyProject(array) {
   // if (array === undefined || array.length === 0) {
@@ -165,9 +178,10 @@ function displaybyProject(array) {
   // return array;
   const btnbyProject = document.getElementById('btnbyProject');
   console.log(btnbyProject);
-};
+}
 
-function displayTasksforToday(array) {
+function displayTasksforToday() {
+  const array = fetchArrayFromLocalHost();
   if (array === undefined || array.length === 0) {
     return array;
   }
@@ -199,7 +213,7 @@ function createTodoForm(todoArray, arrayProjects) {
     newTodo = todoConstructor(
       todoTitle.value,
       todoDescription.value,
-      todoDueDate.value,
+      todoDueDate.bulmaCalendar.date.start,
       todoPriority.checked,
       selectProject.value,
       lastId(todoArray),
@@ -207,9 +221,23 @@ function createTodoForm(todoArray, arrayProjects) {
     if (todoArray === undefined) {
       todoArray = [];
     }
+    console.log(newTodo);
     todoArray.push(newTodo);
     modalContainer.innerHTML = '';
   });
+  const calendars = bulmaCalendar.attach('[type="date"]', { displayMode: 'inline', dateFormat: 'DD/MM/YYYY', clearButton: false, showHeader: false, showFooter: false });
+  calendars.forEach(calendar => {
+    calendar.on('select', date => {
+      console.log(date);
+    });
+  });
+  const element = document.querySelector('#todoDueDate');
+  if (element) {
+    // bulmaCalendar instance is available as element.bulmaCalendar
+    element.bulmaCalendar.datePicker.on('select', (datepicker) => {
+      console.log(datepicker.data.value());
+    });
+  }
   document.querySelectorAll('#delete-todo-modal').forEach(item => {
     item.addEventListener('click', () => {
       modalContainer.innerHTML = '';

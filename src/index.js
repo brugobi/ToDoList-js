@@ -1,41 +1,27 @@
 import './styles.scss';
 import '@fortawesome/fontawesome-free/js/fontawesome';
-import '@fortawesome/fontawesome-free/js/solid';
-import '@fortawesome/fontawesome-free/js/regular';
-import '@fortawesome/fontawesome-free/js/brands';
 import {
   createProjectForm,
   createTodoForm,
-  displayAllTasks,
+  displayTasks,
   displayTasksforToday,
-  displaybyProject,
   deleteTodoObjFromArray,
   deleteTodoHTML,
   loadProjects,
 }
   from './functions';
 
-const arrayOfProjects = ['hello', 'world'];
-let arrayOfTasks = [
-  {
-    title: 'ASD', description: 'ASD', duedate: '2020-01-01T00:00', priority: true, project: 'hello', isDone: false, id: 1,
-  },
-  {
-    title: 'ASD', description: 'ASD', duedate: '2020-01-01T00:00', priority: true, project: 'hello', isDone: false, id: 2,
-  },
-  {
-    title: 'ASD', description: 'ASD', duedate: '2020-01-01T00:00', priority: true, project: 'hello', isDone: false, id: 3,
-  },
-  {
-    title: 'ASD', description: 'ASD', duedate: '2020-01-01T00:00', priority: true, project: 'hello', isDone: false, id: 4,
-  },
-  {
-    title: 'ASD', description: 'ASD', duedate: '2020-11-20T00:00', priority: true, project: 'hello', isDone: false, id: 5,
-  },
-  {
-    title: 'ASD', description: 'ASD', duedate: '2020-11-20T03:30', priority: true, project: 'hello', isDone: false, id: 6,
-  },
-];
+// let toDos;
+
+// localStorage.setItem('toDos', JSON.stringify(toDos));
+// toDos = JSON.parse(localStorage.getItem('toDos') || '[]');
+// toDos.push({id: 1, foo: "bar"});
+// console.log(toDos);
+
+
+const arrayOfProjects = JSON.parse(localStorage.getItem('arrayOfProjects') || '["hello", "world"]');
+let arrayOfTasks = JSON.parse(localStorage.getItem('arrayOfTasks') || '[{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":1},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":2},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":3},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":4},{"title":"ASD","description":"ASD","duedate":"2020-11-21T00:00","priority":true,"project":"hello","isDone":false,"id":5},{"title":"ASD","description":"ASD","duedate":"2020-11-21T03:30","priority":true,"project":"hello","isDone":false,"id":6}]');
+
 function addEventListenerByClass(className, event, fn) {
   const list = document.getElementsByClassName(className);
   for (let i = 0, len = list.length; i < len; i += 1) {
@@ -55,10 +41,10 @@ newProjectBtn.addEventListener('click', () => {
 
 const btnAllTasks = document.getElementById('btnAllTasks');
 btnAllTasks.addEventListener('click', () => {
-  displayAllTasks(arrayOfTasks);
+  displayTasks();
   addEventListenerByClass('delete', 'click', (e) => {
     arrayOfTasks = deleteTodoObjFromArray(arrayOfTasks, e.target.id);
-    displayAllTasks(arrayOfTasks);
+    displayTasks(arrayOfTasks);
     return arrayOfTasks;
   });
 });
