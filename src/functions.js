@@ -4,17 +4,24 @@ import {
   formatRelative,
   subDays,
 } from 'date-fns';
-import bulmaCalendar from 'bulma-calendar/dist/js/bulma-calendar';
 
-import { firstPart, lastPart, projectForm } from './DOM';
 
-const fetchArrayFromLocalHost = () => {
-  const todoArray = JSON.parse(localStorage.getItem('arrayOfTasks') || '[]');
+import { createTodoForm, closeModal, projectForm } from './DOM';
+
+const fetchTodoArrayFromLocalHost = () => {
+  const todoArray = JSON.parse(localStorage.getItem('arrayOfTodos') || '[]');
   return todoArray;
 };
+const fetchProjectArrayFromLocalHost = () => {
+  const projectsArray = JSON.parse(localStorage.getItem('arrayOfProjects') || '[]');
+  return projectsArray;
+};
 
-const saveArrayInLocalHost = (todoArray) => {
-  localStorage.setItem('arrayOfTasks', JSON.stringify(todoArray));
+const saveTodoArrayInLocalHost = (todoArray) => {
+  localStorage.setItem('arrayOfTodos', JSON.stringify(todoArray));
+};
+const saveProjectArrayInLocalHost = (projectsArray) => {
+  localStorage.setItem('arrayOfProjects', JSON.stringify(projectsArray));
 };
 
 function deleteTodoObjFromArray(array, domId) {
@@ -30,12 +37,12 @@ function changeIsDone(event) {
   console.log(event);
 }
 
-function lastId(array) {
+function lastId(todosArray) {
   let biggestID = 0;
-  if (array === undefined || array.length === 0) {
+  if (todosArray === undefined || todosArray.length === 0) {
     biggestID = 1;
   } else {
-    array.forEach((object) => {
+    todosArray.forEach((object) => {
       if (object.id > biggestID) {
         biggestID = object.id;
       }
@@ -56,21 +63,6 @@ const todoConstructor = (title, description, duedate, priority, project, id) => 
     isDone,
     id,
   };
-};
-
-const appendProjectsToProjectForm = (projects) => {
-  const wrapper = document.createElement('div');
-  const select = document.createElement('select');
-  select.setAttribute('id', 'selectProject');
-
-  projects.forEach((element) => {
-    const option = document.createElement('option');
-    option.innerText = element;
-    select.appendChild(option);
-  });
-
-  wrapper.appendChild(select);
-  return wrapper;
 };
 
 function createProjectForm(globalArray) {
@@ -146,8 +138,7 @@ function displayTasks(array) {
 }
 
 function displayAllTasks() {
-  const array = JSON.parse(localStorage.getItem('arrayOfTasks') || '[]');
-  displayTasks(array);
+  displayTasks(fetchTodoArrayFromLocalHost());
 }
 
 function loadProjects(arrayOfProjects) {
@@ -181,7 +172,7 @@ function displaybyProject(array) {
 }
 
 function displayTasksforToday() {
-  const array = fetchArrayFromLocalHost();
+  const array = fetchTodoArrayFromLocalHost();
   if (array === undefined || array.length === 0) {
     return array;
   }
@@ -196,58 +187,52 @@ function displayTasksforToday() {
   return array;
 }
 
-function createTodoForm(todoArray, arrayProjects) {
-  const modalContainer = document.getElementById('modalContainer');
-  modalContainer.innerHTML = `${firstPart}${appendProjectsToProjectForm(arrayProjects).innerHTML}${lastPart}`;
-  document.getElementById('todoTitle').focus();
+function submitTodoForm() {
   let newTodo = {};
-  const formSubmit = document.getElementById('submit-todo-form');
+  let todosArray = fetchTodoArrayFromLocalHost();
+  const todoTitle = document.getElementById('todoTitle');
+  const todoDescription = document.getElementById('todoDescription');
+  const selectProject = document.getElementById('selectProject');
+  const todoDueDate = document.getElementById('todoDueDate');
+  const todoPriority = document.getElementById('todoPriority');
 
-  formSubmit.addEventListener('click', () => {
-    const todoTitle = document.getElementById('todoTitle');
-    const todoDescription = document.getElementById('todoDescription');
-    const selectProject = document.getElementById('selectProject');
-    const todoDueDate = document.getElementById('todoDueDate');
-    const todoPriority = document.getElementById('todoPriority');
-
-    newTodo = todoConstructor(
-      todoTitle.value,
-      todoDescription.value,
-      todoDueDate.bulmaCalendar.date.start,
-      todoPriority.checked,
-      selectProject.value,
-      lastId(todoArray),
-    );
-    if (todoArray === undefined) {
-      todoArray = [];
-    }
-    console.log(newTodo);
-    todoArray.push(newTodo);
-    modalContainer.innerHTML = '';
-  });
-  const calendars = bulmaCalendar.attach('[type="date"]', { displayMode: 'inline', dateFormat: 'DD/MM/YYYY', clearButton: false, showHeader: false, showFooter: false });
-  calendars.forEach(calendar => {
-    calendar.on('select', date => {
-      console.log(date);
-    });
-  });
-  const element = document.querySelector('#todoDueDate');
-  if (element) {
-    // bulmaCalendar instance is available as element.bulmaCalendar
-    element.bulmaCalendar.datePicker.on('select', (datepicker) => {
-      console.log(datepicker.data.value());
-    });
+  newTodo = todoConstructor(
+    todoTitle.value,
+    todoDescription.value,
+    todoDueDate.bulmaCalendar.date.start,
+    todoPriority.checked,
+    selectProject.value,
+    lastId(todosArray),
+  );
+  if (todosArray === undefined) {
+    todosArray = [];
   }
-  document.querySelectorAll('#delete-todo-modal').forEach(item => {
-    item.addEventListener('click', () => {
-      modalContainer.innerHTML = '';
-    });
-  });
+  console.log(newTodo);
+  todosArray.push(newTodo);
+  saveTodoArrayInLocalHost(todosArray);
+  closeModal();
 }
+
+function displayToDoModal(e) {
+
+  createTodoForm(fetchProjectArrayFromLocalHost());
+  console.log(fetchProjectArrayFromLocalHost());
+  // const formSubmit = document.getElementById('submit-todo-form');
+  // console.log(formSubmit.bubbles);
+  // formSubmit.addEventListener('click', (e) => {
+  //   console.log(e);
+  //   e.preventDefault();
+  //   submitTodoForm();
+  // });
+  // document.querySelectorAll('#delete-todo-modal').forEach(item => {
+  //   item.addEventListener('click', closeModal());
+  // });
+}
+
 
 export {
   createProjectForm,
-  createTodoForm,
+  displayToDoModal,
   displayTasks,
   displayAllTasks,
   displaybyProject,

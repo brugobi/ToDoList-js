@@ -2,7 +2,7 @@ import './styles.scss';
 import '@fortawesome/fontawesome-free/js/fontawesome';
 import {
   createProjectForm,
-  createTodoForm,
+  displayToDoModal,
   displayTasks,
   displayTasksforToday,
   deleteTodoObjFromArray,
@@ -17,10 +17,18 @@ import {
 // toDos = JSON.parse(localStorage.getItem('toDos') || '[]');
 // toDos.push({id: 1, foo: "bar"});
 // console.log(toDos);
+let arrayOfProjects = [];
 
+if (localStorage.getItem('arrayOfProjects') !== null) {
+  arrayOfProjects = JSON.parse(localStorage.getItem('arrayOfProjects'));
+} else {
+  localStorage.setItem('arrayOfProjects', JSON.stringify(['hello', 'world']));
+  arrayOfProjects = JSON.parse(localStorage.getItem('arrayOfProjects'));
+}
 
-const arrayOfProjects = JSON.parse(localStorage.getItem('arrayOfProjects') || '["hello", "world"]');
-let arrayOfTasks = JSON.parse(localStorage.getItem('arrayOfTasks') || '[{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":1},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":2},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":3},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":4},{"title":"ASD","description":"ASD","duedate":"2020-11-21T00:00","priority":true,"project":"hello","isDone":false,"id":5},{"title":"ASD","description":"ASD","duedate":"2020-11-21T03:30","priority":true,"project":"hello","isDone":false,"id":6}]');
+console.log(arrayOfProjects);
+// localStorage.setItem('arrayOfProjects', JSON.stringify(arrayOfProjects));
+let arrayOfTodos = JSON.parse(localStorage.getItem('arrayOfTodos') || '[{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":1},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":2},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":3},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":4},{"title":"ASD","description":"ASD","duedate":"2020-11-21T00:00","priority":true,"project":"hello","isDone":false,"id":5},{"title":"ASD","description":"ASD","duedate":"2020-11-21T03:30","priority":true,"project":"hello","isDone":false,"id":6}]');
 
 function addEventListenerByClass(className, event, fn) {
   const list = document.getElementsByClassName(className);
@@ -29,8 +37,8 @@ function addEventListenerByClass(className, event, fn) {
   }
 }
 const newTodoBtn = document.getElementById('newTodoFormBtn');
-newTodoBtn.addEventListener('click', () => {
-  createTodoForm(arrayOfTasks, arrayOfProjects);
+newTodoBtn.addEventListener('click', (e) => {
+  displayToDoModal(e);
 });
 
 const newProjectBtn = document.getElementById('newProjectBtn');

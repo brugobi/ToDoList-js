@@ -1,4 +1,4 @@
-
+import bulmaCalendar from 'bulma-calendar/dist/js/bulma-calendar';
 // function createEl(type, cl = '') {
 //   const el = document.createElement(type);
 //   if (cl !== '') {
@@ -92,5 +92,38 @@ const lastPart = `
   </div>
 </div>`;
 
+const appendProjectsToProjectForm = (projects) => {
+  const wrapper = document.createElement('div');
+  const select = document.createElement('select');
+  select.setAttribute('id', 'selectProject');
 
-export { firstPart, lastPart, projectForm };
+  projects.forEach((element) => {
+    const option = document.createElement('option');
+    option.innerText = element;
+    select.appendChild(option);
+  });
+
+  wrapper.appendChild(select);
+  return wrapper;
+};
+
+function createTodoForm(arrayProjects) {
+  const modalContainer = document.getElementById('modalContainer');
+  modalContainer.innerHTML = `${firstPart}${appendProjectsToProjectForm(arrayProjects).innerHTML}${lastPart}`;
+  document.getElementById('todoTitle').focus();
+
+  bulmaCalendar.attach('[type="date"]', {
+    displayMode: 'inline',
+    dateFormat: 'DD/MM/YYYY',
+    clearButton: false,
+    showHeader: false,
+    showFooter: false,
+  });
+}
+
+function closeModal() {
+  const modalContainer = document.getElementById('modalContainer');
+  modalContainer.innerHTML = '';
+}
+
+export { createTodoForm, closeModal, projectForm };
