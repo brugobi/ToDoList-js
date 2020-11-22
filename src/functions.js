@@ -3,7 +3,9 @@ import {
 } from 'date-fns';
 
 
-import { createTodoForm, closeModal, projectForm, displayTasks } from './DOM';
+import {
+  createTodoForm, closeModal, projectForm, displayTasks,
+} from './DOM';
 
 const fetchTodoArrayFromLocalStorage = () => {
   const todoArray = JSON.parse(localStorage.getItem('arrayOfTodos') || '[]');
@@ -93,11 +95,24 @@ function createProjectForm(globalArray) {
   });
 }
 
+function changeIsDoneStatus(e, value, callback) {
+  console.log(value);
+  const array = fetchTodoArrayFromLocalStorage();
+  const pos = array.findIndex(obj => obj.id === parseInt(e.target.closest('tr').id, 10));
+  array[pos].isDone = value;
+  saveTodoArrayInLocalStorage(array);
+}
+
 function displayAllTasks() {
   const todoArray = fetchTodoArrayFromLocalStorage();
   displayTasks(todoArray);
   document.querySelectorAll('.delete').forEach(item => {
     item.addEventListener('click', (e) => { deleteTodo(e, displayAllTasks); });
+  });
+  document.querySelectorAll('#isDoneCheckBox').forEach(item => {
+    item.addEventListener('click', (e) => {
+      changeIsDoneStatus(e, e.target.checked, displayAllTasks);
+    });
   });
 }
 
@@ -133,9 +148,6 @@ function displaybyProject(array) {
 
 function displayTasksforToday() {
   const array = fetchTodoArrayFromLocalStorage();
-  if (array === undefined || array.length === 0) {
-    return array;
-  }
   const date = `${format(new Date(), 'yyyy-M-d')}`;
   const arrayTodayTask = [];
   for (let i = 0; i < array.length; i += 1) {
@@ -144,7 +156,6 @@ function displayTasksforToday() {
     }
   }
   displayTasks(arrayTodayTask);
-  return array;
 }
 
 function submitTodoForm(e) {
@@ -155,11 +166,11 @@ function submitTodoForm(e) {
   const selectProject = document.getElementById('selectProject');
   const todoDueDate = document.getElementById('todoDueDate');
   const todoPriority = document.getElementById('todoPriority');
-
+  const date = `${format(todoDueDate.bulmaCalendar.date.start, 'yyyy-M-d')} ${format(todoDueDate.bulmaCalendar.time.start, 'H:m OOOO')}`;
   newTodo = todoConstructor(
     todoTitle.value,
     todoDescription.value,
-    todoDueDate.bulmaCalendar.date.start,
+    date,
     todoPriority.checked,
     selectProject.value,
     lastId(todosArray),
@@ -167,6 +178,7 @@ function submitTodoForm(e) {
   if (todosArray === undefined) {
     todosArray = [];
   }
+  console.log(format(todoDueDate.bulmaCalendar.date.start, 'yyyy-M-d'), format(todoDueDate.bulmaCalendar.time.start, 'H:m OOOO'));
   todosArray.push(newTodo);
   saveTodoArrayInLocalStorage(todosArray);
   closeModal(e);

@@ -1,8 +1,35 @@
 import bulmaCalendar from 'bulma-calendar/dist/js/bulma-calendar';
+import { format, formatDistanceToNow, getTime, parseISO } from 'date-fns';
 
+const customIsDoneCheckBox = `
+<div class="switch_box box_4">
+  <div class="input_wrapper">
+    <input id="isDoneCheckBox" type="checkbox" class="switch_4">
+    <svg class="is_checked" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 426.67 426.67">
+      <path d="M153.504 366.84c-8.657 0-17.323-3.303-23.927-9.912L9.914 237.265c-13.218-13.218-13.218-34.645 0-47.863 13.218-13.218 34.645-13.218 47.863 0l95.727 95.727 215.39-215.387c13.218-13.214 34.65-13.218 47.86 0 13.22 13.218 13.22 34.65 0 47.863L177.435 356.928c-6.61 6.605-15.27 9.91-23.932 9.91z"/>
+    </svg>
+    <svg class="is_unchecked" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212.982 212.982">
+      <path d="M131.804 106.49l75.936-75.935c6.99-6.99 6.99-18.323 0-25.312-6.99-6.99-18.322-6.99-25.312 0L106.49 81.18 30.555 5.242c-6.99-6.99-18.322-6.99-25.312 0-6.99 6.99-6.99 18.323 0 25.312L81.18 106.49 5.24 182.427c-6.99 6.99-6.99 18.323 0 25.312 6.99 6.99 18.322 6.99 25.312 0L106.49 131.8l75.938 75.937c6.99 6.99 18.322 6.99 25.312 0 6.99-6.99 6.99-18.323 0-25.313l-75.936-75.936z" fill-rule="evenodd" clip-rule="evenodd"/>
+    </svg>
+  </div>
+</div>
+`;
+const customCheckBox = `
+<div class="switch_box box_4">
+  <div class="input_wrapper">
+    <input id="todoPriority" type="checkbox" class="switch_4">
+    <svg class="is_checked" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 426.67 426.67">
+      <path d="M153.504 366.84c-8.657 0-17.323-3.303-23.927-9.912L9.914 237.265c-13.218-13.218-13.218-34.645 0-47.863 13.218-13.218 34.645-13.218 47.863 0l95.727 95.727 215.39-215.387c13.218-13.214 34.65-13.218 47.86 0 13.22 13.218 13.22 34.65 0 47.863L177.435 356.928c-6.61 6.605-15.27 9.91-23.932 9.91z"/>
+    </svg>
+    <svg class="is_unchecked" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212.982 212.982">
+      <path d="M131.804 106.49l75.936-75.935c6.99-6.99 6.99-18.323 0-25.312-6.99-6.99-18.322-6.99-25.312 0L106.49 81.18 30.555 5.242c-6.99-6.99-18.322-6.99-25.312 0-6.99 6.99-6.99 18.323 0 25.312L81.18 106.49 5.24 182.427c-6.99 6.99-6.99 18.323 0 25.312 6.99 6.99 18.322 6.99 25.312 0L106.49 131.8l75.938 75.937c6.99 6.99 18.322 6.99 25.312 0 6.99-6.99 6.99-18.323 0-25.313l-75.936-75.936z" fill-rule="evenodd" clip-rule="evenodd"/>
+    </svg>
+  </div>
+</div>
+`;
 const projectForm = `
 <div id="project-modal-form"class="modal is-active is-clipped">
-<div class="modal-background"></div>
+<div class="modal-background" id="delete-todo-modal"></div>
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">New Project</p>
@@ -31,7 +58,7 @@ const projectForm = `
 `;
 const firstPart = `
 <div id="todo-modal-form" class="modal is-active is-clipped">
-  <div class="modal-background"></div>
+  <div class="modal-background" id="delete-todo-modal"></div>
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">Add a new To Do:</p>
@@ -42,11 +69,11 @@ const firstPart = `
         <div class="field">
           <label class="label">Title</label>
           <div class="control">
-            <input id="todoTitle" class="input" type="text" placeholder="Title">
+            <input id="todoTitle" class="input" type="text" placeholder="Title" required>
           </div>
         </div>
         <div id="fieldProjects" class="field">
-          <label class="label">Projects</label>
+          <label class="label">Pick a Project</label>
           <div class="control">
             <div class="select">`;
 const lastPart = `
@@ -60,21 +87,19 @@ const lastPart = `
           </div>
         </div>
         <div class="columns">
-          <div class="column is-half">
+          <div class="column">
             <div class="field">
-              <label class="label">Due Date</label>
-              <div class="control">
-                <input id="todoDueDate" type="date">
+              <label class="label">Due Date & Time</label>
+              <div class="control bulma-calendar">
+                <input id="todoDueDate" type="datetime">
               </div>
             </div>
           </div>
         </div>
         <div class="field">
           <div class="control">
-            <label class="checkbox">
-              <input id="todoPriority" type="checkbox">
-              Priority
-            </label>
+            <label class="label">Priority</label>
+            ${customCheckBox}
           </div>
         </div>
       </div>
@@ -85,6 +110,10 @@ const lastPart = `
     </footer>
   </div>
 </div>`;
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 const appendProjectsToTodoForm = (projects) => {
   const wrapper = document.createElement('div');
@@ -106,7 +135,7 @@ function createTodoForm(arrayProjects) {
   modalContainer.innerHTML = `${firstPart}${appendProjectsToTodoForm(arrayProjects).innerHTML}${lastPart}`;
   document.getElementById('todoTitle').focus();
 
-  bulmaCalendar.attach('[type="date"]', {
+  bulmaCalendar.attach('[type="datetime"]', {
     displayMode: 'inline',
     dateFormat: 'DD/MM/YYYY',
     clearButton: false,
@@ -123,7 +152,6 @@ function displayTasks(array) {
     <th>Title</th>
     <th>Description</th>
     <th>Due Date</th>
-    <th>Priority</th>
     <th>Project</th>
     <th>It is Done?</th>
     <th></th>
@@ -134,27 +162,29 @@ function displayTasks(array) {
       const td = document.createElement('td');
       if (key === 'isDone') {
         const td = document.createElement('td');
-        const checkbox = document.createElement('input');
-        checkbox.setAttribute('type', 'checkbox');
-        checkbox.setAttribute('id', 'btncheckbox');
-        td.append(checkbox);
+        td.innerHTML = customIsDoneCheckBox;
         tr.append(td);
-      } else if (key !== 'id') {
-        td.innerText = object[key];
+      } else if (key === 'duedate') {
+        const td = document.createElement('td');
+        td.innerText = capitalizeFirstLetter(
+          formatDistanceToNow(new Date(object[key]), { addSuffix: true }),
+        );
+        td.title = object[key];
+        tr.append(td);
+      } else if (key !== 'id' && key !== 'priority') {
+        td.innerText = capitalizeFirstLetter(object[key]);
         tr.append(td);
       }
     });
-
     const deleteBtn = document.createElement('a');
     deleteBtn.classList.add('delete');
     deleteBtn.setAttribute('id', `${object.id}`);
     const td = document.createElement('td');
     td.appendChild(deleteBtn);
     tr.append(td);
-
+    tr.setAttribute('id', `${object.id}`);
     todoDisplay.append(tr);
   });
-  return array;
 }
 
 function closeModal(e) {

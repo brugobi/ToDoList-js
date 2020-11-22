@@ -29,10 +29,22 @@ let arrayOfTodos = [];
 if (localStorage.getItem('arrayOfTodos') !== null) {
   arrayOfTodos = JSON.parse(localStorage.getItem('arrayOfTodos'));
 } else {
-  localStorage.setItem('arrayOfTodos', JSON.stringify([{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":1},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":2},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":3},{"title":"ASD","description":"ASD","duedate":"2020-01-01T00:00","priority":true,"project":"hello","isDone":false,"id":4},{"title":"ASD","description":"ASD","duedate":"2020-11-21T00:00","priority":true,"project":"hello","isDone":false,"id":5},{"title":"ASD","description":"ASD","duedate":"2020-11-21T03:30","priority":true,"project":"hello","isDone":false,"id":6}]));
+  localStorage.setItem('arrayOfTodos', JSON.stringify([{
+    title: 'ASD', description: 'ASD', duedate: '2020-11-22 12:30 GMT-03:00', priority: true, project: 'hello', isDone: false, id: 1,
+  }, {
+    title: 'ASD', description: 'ASD', duedate: '2020-11-22 12:30 GMT-03:00', priority: true, project: 'hello', isDone: false, id: 2,
+  }, {
+    title: 'ASD', description: 'ASD', duedate: '2020-11-22 12:30 GMT-03:00', priority: true, project: 'hello', isDone: false, id: 3,
+  }, {
+    title: 'ASD', description: 'ASD', duedate: '2020-11-22 12:30 GMT-03:00', priority: true, project: 'world', isDone: false, id: 4,
+  }, {
+    title: 'ASD', description: 'ASD', duedate: '2020-11-22 12:30 GMT-03:00', priority: true, project: 'world', isDone: false, id: 5,
+  }, {
+    title: 'ASD', description: 'ASD', duedate: '2020-11-22 12:30 GMT-03:00', priority: true, project: 'world', isDone: false, id: 6,
+  }]));
   arrayOfTodos = JSON.parse(localStorage.getItem('arrayOfTodos'));
 }
-
+console.log(arrayOfTodos);
 function addEventListenerByClass(className, event, fn) {
   const list = document.getElementsByClassName(className);
   for (let i = 0, len = list.length; i < len; i += 1) {
