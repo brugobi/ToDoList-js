@@ -1,5 +1,5 @@
 import bulmaCalendar from 'bulma-calendar/dist/js/bulma-calendar';
-import { format, formatDistanceToNow, getTime, parseISO } from 'date-fns';
+import { format, formatDistanceToNow, getTime, isBefore } from 'date-fns';
 
 const customIsDoneCheckBox = `
 <div class="switch_box box_4">
@@ -166,10 +166,14 @@ function displayTasks(array) {
         tr.append(td);
       } else if (key === 'duedate') {
         const td = document.createElement('td');
-        td.innerText = capitalizeFirstLetter(
-          formatDistanceToNow(new Date(object[key]), { addSuffix: true }),
-        );
-        td.title = object[key];
+        if (isBefore(new Date(object[key]), new Date())) {
+          td.innerText = 'Past Due!';
+        } else {
+          td.innerText = capitalizeFirstLetter(
+            formatDistanceToNow(new Date(object[key]), { addSuffix: true }),
+          );
+        }
+        td.title = format(new Date(object[key]), 'dddd do MMMM yyyy');
         tr.append(td);
       } else if (key !== 'id' && key !== 'priority') {
         td.innerText = capitalizeFirstLetter(object[key]);
