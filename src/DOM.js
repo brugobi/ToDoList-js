@@ -1,6 +1,7 @@
 import bulmaCalendar from 'bulma-calendar/dist/js/bulma-calendar';
 import { format, formatDistanceToNow, getTime, isBefore } from 'date-fns';
 
+
 const customIsDoneCheckBox = `
 <div class="switch_box box_4">
   <div class="input_wrapper">
@@ -151,6 +152,7 @@ function displayTasks(array) {
   <tr>
     <th>Title</th>
     <th>Description</th>
+    <th>Remaining</th>
     <th>Due Date</th>
     <th>Project</th>
     <th>It is Done?</th>
@@ -162,10 +164,24 @@ function displayTasks(array) {
       const td = document.createElement('td');
       if (key === 'isDone') {
         const td = document.createElement('td');
-        td.innerHTML = customIsDoneCheckBox;
+        const divSwitchBox = document.createElement('div');
+        divSwitchBox.classList.add('switch_box', 'box_4');
+        const divInputWrapper = document.createElement('div');
+        divInputWrapper.classList.add('input_wrapper');
+        const inputIsDone = document.createElement('input');
+        inputIsDone.classList.add('switch_4');
+        inputIsDone.setAttribute('id', 'isDoneCheckBox');
+        inputIsDone.setAttribute('type', 'checkbox');
+        if (object[key] === true) {
+          inputIsDone.setAttribute('checked', 'true');
+        }
+        divInputWrapper.append(inputIsDone);
+        divSwitchBox.append(divInputWrapper);
+        td.append(divSwitchBox);
         tr.append(td);
       } else if (key === 'duedate') {
         const td = document.createElement('td');
+        const td2 = document.createElement('td');
         if (isBefore(new Date(object[key]), new Date())) {
           td.innerText = 'Past Due!';
         } else {
@@ -173,8 +189,9 @@ function displayTasks(array) {
             formatDistanceToNow(new Date(object[key]), { addSuffix: true }),
           );
         }
-        td.title = format(new Date(object[key]), 'dddd do MMMM yyyy');
+        td2.innerText = format(new Date(object[key]), 'iiii dd MMMM yyyy HH:mm');
         tr.append(td);
+        tr.append(td2);
       } else if (key !== 'id' && key !== 'priority') {
         td.innerText = capitalizeFirstLetter(object[key]);
         tr.append(td);

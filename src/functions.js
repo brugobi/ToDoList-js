@@ -7,6 +7,37 @@ import {
   createTodoForm, closeModal, projectForm, displayTasks,
 } from './DOM';
 
+function sortDates(array) {
+  return array.sort((a, b) => {
+    if (a.duedate < b.duedate) {
+      return -1;
+    }
+    if (a.duedate > b.duedate) {
+      return 1;
+    }
+    return 0;
+  });
+}
+
+function orderTodoArray(todoArray) {
+  let priorityTodo = [];
+  let noPriorityTodo = [];
+  let doneTodo = [];
+  todoArray.forEach((object) => {
+    if (object.isDone === true) {
+      doneTodo.push(object);
+    } else if (object.priority === true) {
+      priorityTodo.push(object);
+    } else {
+      noPriorityTodo.push(object);
+    }
+  });
+  priorityTodo = sortDates(priorityTodo);
+  noPriorityTodo = sortDates(noPriorityTodo);
+  doneTodo = sortDates(doneTodo);
+  return priorityTodo.concat(noPriorityTodo, doneTodo);
+}
+
 const fetchTodoArrayFromLocalStorage = () => {
   const todoArray = JSON.parse(localStorage.getItem('arrayOfTodos') || '[]');
   return todoArray;
@@ -17,8 +48,8 @@ const fetchProjectArrayFromLocalStorage = () => {
 };
 
 const saveTodoArrayInLocalStorage = (todoArray) => {
-  console.log(todoArray);
-  localStorage.setItem('arrayOfTodos', JSON.stringify(todoArray));
+  const orderedArray = orderTodoArray(todoArray);
+  localStorage.setItem('arrayOfTodos', JSON.stringify(orderedArray));
 };
 const saveProjectArrayInLocalStorage = (projectsArray) => {
   localStorage.setItem('arrayOfProjects', JSON.stringify(projectsArray));
@@ -96,11 +127,13 @@ function createProjectForm(globalArray) {
 }
 
 function changeIsDoneStatus(e, value, callback) {
-  console.log(value);
   const array = fetchTodoArrayFromLocalStorage();
   const pos = array.findIndex(obj => obj.id === parseInt(e.target.closest('tr').id, 10));
   array[pos].isDone = value;
   saveTodoArrayInLocalStorage(array);
+  setTimeout(() => {
+    callback();
+  }, 500);
 }
 
 function displayAllTasks() {
@@ -166,7 +199,7 @@ function submitTodoForm(e) {
   const selectProject = document.getElementById('selectProject');
   const todoDueDate = document.getElementById('todoDueDate');
   const todoPriority = document.getElementById('todoPriority');
-  const date = `${format(todoDueDate.bulmaCalendar.date.start, 'yyyy-M-d')} ${format(todoDueDate.bulmaCalendar.time.start, 'H:m OOOO')}`;
+  const date = new Date(`${format(todoDueDate.bulmaCalendar.date.start, 'yyyy-M-d')}T${format(todoDueDate.bulmaCalendar.time.start, 'HH:mm')}`);
   newTodo = todoConstructor(
     todoTitle.value,
     todoDescription.value,
@@ -178,7 +211,6 @@ function submitTodoForm(e) {
   if (todosArray === undefined) {
     todosArray = [];
   }
-  console.log(format(todoDueDate.bulmaCalendar.date.start, 'yyyy-M-d'), format(todoDueDate.bulmaCalendar.time.start, 'H:m OOOO'));
   todosArray.push(newTodo);
   saveTodoArrayInLocalStorage(todosArray);
   closeModal(e);

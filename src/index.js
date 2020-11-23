@@ -30,17 +30,19 @@ if (localStorage.getItem('arrayOfTodos') !== null) {
   arrayOfTodos = JSON.parse(localStorage.getItem('arrayOfTodos'));
 } else {
   localStorage.setItem('arrayOfTodos', JSON.stringify([{
-    title: 'ASD', description: 'ASD', duedate: '2020-11-22 12:30 GMT-03:00', priority: true, project: 'hello', isDone: false, id: 1,
+    title: 'ASD', description: 'ASD', duedate: '2020-11-23T01:00:00.000', priority: true, project: 'hello', isDone: false, id: 1,
   }, {
-    title: 'ASD', description: 'ASD', duedate: '2020-11-22 12:30 GMT-03:00', priority: true, project: 'hello', isDone: false, id: 2,
+    title: 'ASD', description: 'ASD', duedate: '2020-11-26T16:00:00.000', priority: true, project: 'hello', isDone: false, id: 2,
   }, {
-    title: 'ASD', description: 'ASD', duedate: '2020-11-22 12:30 GMT-03:00', priority: true, project: 'hello', isDone: false, id: 3,
+    title: 'ASD', description: 'ASD', duedate: '2020-11-26T18:00:00.000', priority: true, project: 'hello', isDone: false, id: 3,
   }, {
-    title: 'ASD', description: 'ASD', duedate: '2020-11-22 12:30 GMT-03:00', priority: true, project: 'world', isDone: false, id: 4,
+    title: 'ASD', description: 'ASD', duedate: '2020-11-26T21:00:00.000', priority: true, project: 'world', isDone: false, id: 4,
   }, {
-    title: 'ASD', description: 'ASD', duedate: '2020-11-22 12:30 GMT-03:00', priority: true, project: 'world', isDone: false, id: 5,
+    title: 'ASD', description: 'ASD', duedate: '2020-11-26T23:00:00.000', priority: true, project: 'world', isDone: false, id: 5,
   }, {
-    title: 'ASD', description: 'ASD', duedate: '2020-11-22 12:30 GMT-03:00', priority: true, project: 'world', isDone: false, id: 6,
+    title: 'ASD', description: 'ASD', duedate: '2020-11-26T23:45:00.000', priority: true, project: 'world', isDone: false, id: 6,
+  }, {
+    title: 'ASD', description: 'ASD', duedate: '2020-11-21T01:00:00.000', priority: true, project: 'hello', isDone: false, id: 7,
   }]));
   arrayOfTodos = JSON.parse(localStorage.getItem('arrayOfTodos'));
 }
