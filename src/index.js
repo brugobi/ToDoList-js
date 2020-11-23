@@ -9,6 +9,7 @@ import {
   deleteTodoHTML,
   loadProjects,
   displaybyProject,
+  displayTasksbyWeek,
 }
   from './functions';
 
@@ -74,6 +75,11 @@ btnTodayTasks.addEventListener('click', () => {
   });
 });
 
+const btnWeekTasks = document.getElementById('btnWeekTasks');
+btnWeekTasks.addEventListener('click', () => {
+  displayTasksbyWeek();
+});
+
 window.addEventListener('DOMContentLoaded', (event) => {
   loadProjects();
   // const btnbyProject = document.getElementById('btnbyProject');
@@ -82,3 +88,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     displaybyProject(e.target.innerText);
   });
 });
+
+
+
+

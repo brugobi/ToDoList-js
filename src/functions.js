@@ -1,5 +1,6 @@
 import {
   format,
+  isSameWeek,
 } from 'date-fns';
 
 
@@ -178,6 +179,18 @@ function displayTasksforToday() {
   displayTasks(arrayTodayTask);
 }
 
+function displayTasksbyWeek() {
+  const array = fetchTodoArrayFromLocalStorage();
+  const arrayWeekTask = [];
+  array.forEach(obj => {
+    if (isSameWeek(new Date(), new Date(obj.duedate))) {
+      arrayWeekTask.push(obj)
+    }
+  });
+  displayTasks(arrayWeekTask);
+}
+
+
 function submitTodoForm(e) {
   let newTodo = {};
   let todosArray = fetchTodoArrayFromLocalStorage();
@@ -225,4 +238,5 @@ export {
   deleteTodoObjFromArray,
   deleteTodoHTML,
   loadProjects,
+  displayTasksbyWeek,
 };
