@@ -1,27 +1,82 @@
 import {
   format,
-  formatDistance,
-  formatRelative,
-  subDays,
 } from 'date-fns';
 
-import { firstPart, lastPart, projectForm } from './DOM';
+
+import {
+  createTodoForm, closeModal, projectForm, displayTasks,
+} from './DOM';
+
+function sortDates(array) {
+  return array.sort((a, b) => {
+    if (a.duedate < b.duedate) {
+      return -1;
+    }
+    if (a.duedate > b.duedate) {
+      return 1;
+    }
+    return 0;
+  });
+}
+
+function orderTodoArray(todoArray) {
+  let priorityTodo = [];
+  let noPriorityTodo = [];
+  let doneTodo = [];
+  todoArray.forEach((object) => {
+    if (object.isDone === true) {
+      doneTodo.push(object);
+    } else if (object.priority === true) {
+      priorityTodo.push(object);
+    } else {
+      noPriorityTodo.push(object);
+    }
+  });
+  priorityTodo = sortDates(priorityTodo);
+  noPriorityTodo = sortDates(noPriorityTodo);
+  doneTodo = sortDates(doneTodo);
+  return priorityTodo.concat(noPriorityTodo, doneTodo);
+}
+
+const fetchTodoArrayFromLocalStorage = () => {
+  const todoArray = JSON.parse(localStorage.getItem('arrayOfTodos') || '[]');
+  return todoArray;
+};
+const fetchProjectArrayFromLocalStorage = () => {
+  const projectsArray = JSON.parse(localStorage.getItem('arrayOfProjects') || '[]');
+  return projectsArray;
+};
+
+const saveTodoArrayInLocalStorage = (todoArray) => {
+  const orderedArray = orderTodoArray(todoArray);
+  localStorage.setItem('arrayOfTodos', JSON.stringify(orderedArray));
+};
+const saveProjectArrayInLocalStorage = (projectsArray) => {
+  localStorage.setItem('arrayOfProjects', JSON.stringify(projectsArray));
+};
 
 function deleteTodoObjFromArray(array, domId) {
   const newArray = array.filter(object => object.id !== parseInt(domId, 10));
   return newArray;
 }
 
+function deleteTodo(e, callback) {
+  const todoArray = fetchTodoArrayFromLocalStorage()
+    .filter(object => object.id !== parseInt(e.target.id, 10));
+  saveTodoArrayInLocalStorage(todoArray);
+  callback();
+}
+
 function deleteTodoHTML(target) {
   target.parentNode.parentNode.remove();
 }
 
-function lastId(array) {
+function lastId(todosArray) {
   let biggestID = 0;
-  if (array === undefined || array.length === 0) {
+  if (todosArray === undefined || todosArray.length === 0) {
     biggestID = 1;
   } else {
-    array.forEach((object) => {
+    todosArray.forEach((object) => {
       if (object.id > biggestID) {
         biggestID = object.id;
       }
@@ -42,21 +97,6 @@ const todoConstructor = (title, description, duedate, priority, project, id) => 
     isDone,
     id,
   };
-};
-
-const appendProjectsToProjectForm = (projects) => {
-  const wrapper = document.createElement('div');
-  const select = document.createElement('select');
-  select.setAttribute('id', 'selectProject');
-
-  projects.forEach((element) => {
-    const option = document.createElement('option');
-    option.innerText = element;
-    select.appendChild(option);
-  });
-
-  wrapper.appendChild(select);
-  return wrapper;
 };
 
 function createProjectForm(globalArray) {
@@ -86,56 +126,16 @@ function createProjectForm(globalArray) {
   });
 }
 
-function displayTasks(array) {
-  const todoDisplay = document.getElementById('todoDisplay');
-  todoDisplay.innerHTML = `
-  <tr>
-    <th>Title</th>
-    <th>Description</th>
-    <th>Due Date</th>
-    <th>Priority</th>
-    <th>Project</th>
-    <th>It is Done?</th>
-    <th></th>
-  </tr>`;
-  if (array === undefined || array.length === 0) {
-    return array;
-  }
-  array.forEach((object) => {
-    const tr = document.createElement('tr');
-    Object.keys(object).forEach((key) => {
-      const td = document.createElement('td');
-      if (key === 'isDone') {
-        const td = document.createElement('td');
-        const checkbox = document.createElement('input');
-        checkbox.setAttribute('type', 'checkbox');
-        checkbox.setAttribute('id', 'btncheckbox');
-        td.append(checkbox);
-        tr.append(td);
-      } else if (key !== 'id') {
-        td.innerText = object[key];
-        tr.append(td);
-      }
-    });
-
-    const deleteBtn = document.createElement('a');
-    deleteBtn.classList.add('delete');
-    deleteBtn.setAttribute('id', `${object.id}`);
-    const td = document.createElement('td');
-    td.appendChild(deleteBtn);
-    tr.append(td);
-
-    todoDisplay.append(tr);
-  });
-  return array;
+function changeIsDoneStatus(e, value, callback) {
+  const array = fetchTodoArrayFromLocalStorage();
+  const pos = array.findIndex(obj => obj.id === parseInt(e.target.closest('tr').id, 10));
+  array[pos].isDone = value;
+  saveTodoArrayInLocalStorage(array);
+  setTimeout(() => {
+    callback();
+  }, 500);
 }
 
-function displayAllTasks(array) {
-  displayTasks(array);
-  return array;
-};
-
-//const arrayOfProjects = ['hello', 'world'];
 function loadProjects(arrayOfProjects) {
   const ul = document.getElementById('aside-project-list');
   arrayOfProjects.forEach(project => {
@@ -146,7 +146,20 @@ function loadProjects(arrayOfProjects) {
     li.appendChild(a);
     a.innerHTML = project;
   });
-};
+}
+
+function displayAllTasks() {
+  const todoArray = fetchTodoArrayFromLocalStorage();
+  displayTasks(todoArray);
+  document.querySelectorAll('.delete').forEach(item => {
+    item.addEventListener('click', (e) => { deleteTodo(e, displayAllTasks); });
+  });
+  document.querySelectorAll('#isDoneCheckBox').forEach(item => {
+    item.addEventListener('click', (e) => {
+      changeIsDoneStatus(e, e.target.checked, displayAllTasks);
+    });
+  });
+}
 
 function displaybyProject(array) {
   // if (array === undefined || array.length === 0) {
@@ -164,12 +177,10 @@ function displaybyProject(array) {
   // return array;
   const btnbyProject = document.getElementById('btnbyProject');
   console.log(btnbyProject);
-};
+}
 
-function displayTasksforToday(array) {
-  if (array === undefined || array.length === 0) {
-    return array;
-  }
+function displayTasksforToday() {
+  const array = fetchTodoArrayFromLocalStorage();
   const date = `${format(new Date(), 'yyyy-M-d')}`;
   const arrayTodayTask = [];
   for (let i = 0; i < array.length; i += 1) {
@@ -178,47 +189,48 @@ function displayTasksforToday(array) {
     }
   }
   displayTasks(arrayTodayTask);
-  return array;
 }
 
-function createTodoForm(todoArray, arrayProjects) {
-  const modalContainer = document.getElementById('modalContainer');
-  modalContainer.innerHTML = `${firstPart}${appendProjectsToProjectForm(arrayProjects).innerHTML}${lastPart}`;
-  document.getElementById('todoTitle').focus();
+function submitTodoForm(e) {
   let newTodo = {};
+  let todosArray = fetchTodoArrayFromLocalStorage();
+  const todoTitle = document.getElementById('todoTitle');
+  const todoDescription = document.getElementById('todoDescription');
+  const selectProject = document.getElementById('selectProject');
+  const todoDueDate = document.getElementById('todoDueDate');
+  const todoPriority = document.getElementById('todoPriority');
+  const date = new Date(`${format(todoDueDate.bulmaCalendar.date.start, 'yyyy-M-d')}T${format(todoDueDate.bulmaCalendar.time.start, 'HH:mm')}`);
+  newTodo = todoConstructor(
+    todoTitle.value,
+    todoDescription.value,
+    date,
+    todoPriority.checked,
+    selectProject.value,
+    lastId(todosArray),
+  );
+  if (todosArray === undefined) {
+    todosArray = [];
+  }
+  console.log(todoDueDate.bulmaCalendar);
+  todosArray.push(newTodo);
+  saveTodoArrayInLocalStorage(todosArray);
+  closeModal(e);
+}
+
+function displayToDoModal() {
+  createTodoForm(fetchProjectArrayFromLocalStorage());
   const formSubmit = document.getElementById('submit-todo-form');
-
-  formSubmit.addEventListener('click', () => {
-    const todoTitle = document.getElementById('todoTitle');
-    const todoDescription = document.getElementById('todoDescription');
-    const selectProject = document.getElementById('selectProject');
-    const todoDueDate = document.getElementById('todoDueDate');
-    const todoPriority = document.getElementById('todoPriority');
-
-    newTodo = todoConstructor(
-      todoTitle.value,
-      todoDescription.value,
-      todoDueDate.value,
-      todoPriority.checked,
-      selectProject.value,
-      lastId(todoArray),
-    );
-    if (todoArray === undefined) {
-      todoArray = [];
-    }
-    todoArray.push(newTodo);
-    modalContainer.innerHTML = '';
+  formSubmit.addEventListener('click', (e) => {
+    submitTodoForm(e);
   });
   document.querySelectorAll('#delete-todo-modal').forEach(item => {
-    item.addEventListener('click', () => {
-      modalContainer.innerHTML = '';
-    });
+    item.addEventListener('click', e => { closeModal(e); });
   });
 }
 
 export {
   createProjectForm,
-  createTodoForm,
+  displayToDoModal,
   displayTasks,
   displayAllTasks,
   displaybyProject,
