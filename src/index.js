@@ -11,12 +11,6 @@ import {
 }
   from './functions';
 
-// let toDos;
-
-// localStorage.setItem('toDos', JSON.stringify(toDos));
-// toDos = JSON.parse(localStorage.getItem('toDos') || '[]');
-// toDos.push({id: 1, foo: "bar"});
-// console.log(toDos);
 let arrayOfProjects = [];
 
 if (localStorage.getItem('arrayOfProjects') !== null) {
