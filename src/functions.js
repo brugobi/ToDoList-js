@@ -4,7 +4,7 @@ import {
 
 
 import {
-  createTodoForm, closeModal, projectForm, displayTasks,
+  createTodoForm, closeModal, projectForm, displayTasks, displayProjects,
 } from './DOM';
 
 function sortDates(array) {
@@ -136,16 +136,9 @@ function changeIsDoneStatus(e, value, callback) {
   }, 500);
 }
 
-function loadProjects(arrayOfProjects) {
-  const ul = document.getElementById('aside-project-list');
-  arrayOfProjects.forEach(project => {
-    const li = document.createElement('li');
-    ul.appendChild(li);
-    const a = document.createElement('a');
-    a.setAttribute('id', 'btnbyProject');
-    li.appendChild(a);
-    a.innerHTML = project;
-  });
+function loadProjects() {
+  const arrayOfProjects = fetchProjectArrayFromLocalStorage();
+  displayProjects(arrayOfProjects);
 }
 
 function displayAllTasks() {
@@ -161,22 +154,16 @@ function displayAllTasks() {
   });
 }
 
-function displaybyProject(array) {
-  // if (array === undefined || array.length === 0) {
-  //   return array;
-  // }
-  // const parent = document.getElementById('aside-project-list');
-  // const arraybyProject = [];
-  // for (let i = 0; i < array.length; i += 1) {
-  //   const child = parent.childNodes[i];
-  //   if (array[i].project === child.textContent) {
-  //     arraybyProject.push(array[i]);
-  //   }
-  // }
-  // displayTasks(arraybyProject);
-  // return array;
-  const btnbyProject = document.getElementById('btnbyProject');
-  console.log(btnbyProject);
+function displaybyProject(string) {
+  const arrayTodo = fetchTodoArrayFromLocalStorage();
+  const arrayProjects = [];
+  const parent = document.getElementById('aside-project-list');
+  for (let i = 0; i < arrayTodo.length; i += 1) {
+    if (arrayTodo[i].project === string) {
+      arrayProjects.push(arrayTodo[i]);
+    }
+  }
+  displayTasks(arrayProjects);
 }
 
 function displayTasksforToday() {

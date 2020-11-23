@@ -8,6 +8,7 @@ import {
   deleteTodoObjFromArray,
   deleteTodoHTML,
   loadProjects,
+  displaybyProject,
 }
   from './functions';
 
@@ -74,11 +75,10 @@ btnTodayTasks.addEventListener('click', () => {
 });
 
 window.addEventListener('DOMContentLoaded', (event) => {
-  loadProjects(arrayOfProjects);
+  loadProjects();
   // const btnbyProject = document.getElementById('btnbyProject');
   const btnbyProject = document.getElementById('aside-project-list');
   btnbyProject.addEventListener('click', (e) => {
-    console.log(btnbyProject.textContent);
-    console.log(e.target.innerText);
+    displaybyProject(e.target.innerText);
   });
 });

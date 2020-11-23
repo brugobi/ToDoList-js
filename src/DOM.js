@@ -200,9 +200,22 @@ function closeModal(e) {
   modalContainer.innerHTML = '';
 }
 
+function displayProjects(arrayOfProjects) {
+  const ul = document.getElementById('aside-project-list');
+  arrayOfProjects.forEach(project => {
+    const li = document.createElement('li');
+    ul.appendChild(li);
+    const a = document.createElement('a');
+    a.setAttribute('id', 'btnbyProject');
+    li.appendChild(a);
+    a.innerHTML = project;
+  });
+}
+
 export {
   createTodoForm,
   closeModal,
   projectForm,
   displayTasks,
+  displayProjects,
 };
