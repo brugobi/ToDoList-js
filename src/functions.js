@@ -136,6 +136,18 @@ function changeIsDoneStatus(e, value, callback) {
   }, 500);
 }
 
+function loadProjects(arrayOfProjects) {
+  const ul = document.getElementById('aside-project-list');
+  arrayOfProjects.forEach(project => {
+    const li = document.createElement('li');
+    ul.appendChild(li);
+    const a = document.createElement('a');
+    a.setAttribute('id', 'btnbyProject');
+    li.appendChild(a);
+    a.innerHTML = project;
+  });
+}
+
 function displayAllTasks() {
   const todoArray = fetchTodoArrayFromLocalStorage();
   displayTasks(todoArray);
@@ -146,18 +158,6 @@ function displayAllTasks() {
     item.addEventListener('click', (e) => {
       changeIsDoneStatus(e, e.target.checked, displayAllTasks);
     });
-  });
-}
-
-function loadProjects(arrayOfProjects) {
-  const ul = document.getElementById('aside-project-list');
-  arrayOfProjects.forEach(project => {
-    const li = document.createElement('li');
-    ul.appendChild(li);
-    const a = document.createElement('a');
-    a.setAttribute('id', 'btnbyProject');
-    li.appendChild(a);
-    a.innerHTML = project;
   });
 }
 
@@ -211,6 +211,7 @@ function submitTodoForm(e) {
   if (todosArray === undefined) {
     todosArray = [];
   }
+  console.log(todoDueDate.bulmaCalendar);
   todosArray.push(newTodo);
   saveTodoArrayInLocalStorage(todosArray);
   closeModal(e);
