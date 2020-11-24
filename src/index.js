@@ -1,7 +1,7 @@
 import './styles.scss';
 import '@fortawesome/fontawesome-free/js/fontawesome';
 import {
-  createProjectForm,
+  displayProjectModal,
   displayToDoModal,
   displayAllTasks,
   displayTasksforToday,
@@ -56,7 +56,7 @@ newTodoBtn.addEventListener('click', () => {
 
 const newProjectBtn = document.getElementById('newProjectBtn');
 newProjectBtn.addEventListener('click', () => {
-  createProjectForm(arrayOfProjects);
+  displayProjectModal();
 });
 
 
