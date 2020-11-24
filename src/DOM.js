@@ -225,6 +225,7 @@ function appendProjectsToMenu(arrayOfProjects) {
     const li = document.createElement('li');
     li.setAttribute('id', 'btnbyProject');
     const a = document.createElement('a');
+    a.classList.add('side-menu-btn');
     a.innerText = capitalizeFirstLetter(project);
     li.append(a);
     ul.append(li);

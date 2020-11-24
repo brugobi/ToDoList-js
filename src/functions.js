@@ -1,5 +1,6 @@
 import {
   format,
+  isSameWeek,
 } from 'date-fns';
 
 
@@ -64,11 +65,20 @@ function deleteTodoObjFromArray(array, domId) {
   return newArray;
 }
 
-function deleteTodo(e, callback) {
+function deleteTodo(e, callback, args) {
   const todoArray = fetchTodoArrayFromLocalStorage()
     .filter(object => object.id !== parseInt(e.target.id, 10));
   saveTodoArrayInLocalStorage(todoArray);
-  callback();
+  callback(args);
+}
+function changeIsDoneStatus(e, value, callback, args) {
+  const array = fetchTodoArrayFromLocalStorage();
+  const pos = array.findIndex(obj => obj.id === parseInt(e.target.closest('tr').id, 10));
+  array[pos].isDone = value;
+  saveTodoArrayInLocalStorage(array);
+  setTimeout(() => {
+    callback(args);
+  }, 500);
 }
 
 function deleteTodoHTML(target) {
@@ -103,6 +113,17 @@ const todoConstructor = (title, description, duedate, priority, project, id) => 
   };
 };
 
+function toggleActiveBtns() {
+  const btns = document.getElementsByClassName('side-menu-btn');
+  for (let i = 0; i < btns.length; i += 1) {
+    btns[i].addEventListener('click', () => {
+      const current = document.getElementsByClassName('is-active');
+      current[0].className = current[0].className.replace(' is-active', '');
+      btns[i].className += ' is-active';
+    });
+  }
+}
+
 function submitProjectForm(e) {
   const arrayOfProjects = fetchProjectArrayFromLocalStorage();
   const projectTitle = document.getElementById('projectTitle').value.toLowerCase();
@@ -114,6 +135,7 @@ function submitProjectForm(e) {
     saveProjectArrayInLocalStorage(arrayOfProjects);
     appendProjectsToMenu(fetchProjectArrayFromLocalStorage());
   }
+  toggleActiveBtns();
 }
 
 function displayProjectModal() {
@@ -128,49 +150,44 @@ function displayProjectModal() {
   });
 }
 
-function changeIsDoneStatus(e, value, callback) {
-  const array = fetchTodoArrayFromLocalStorage();
-  const pos = array.findIndex(obj => obj.id === parseInt(e.target.closest('tr').id, 10));
-  array[pos].isDone = value;
-  saveTodoArrayInLocalStorage(array);
-  setTimeout(() => {
-    callback();
-  }, 500);
-}
-
 function loadProjects() {
   appendProjectsToMenu(fetchProjectArrayFromLocalStorage());
+}
+
+function todoListenerDelete(listToRefresh, args) {
+  document.querySelectorAll('.delete').forEach(item => {
+    item.addEventListener('click', (e) => { deleteTodo(e, listToRefresh, args); });
+  });
+}
+
+function todoListenerIsDone(listToRefresh, args) {
+  document.querySelectorAll('#isDoneCheckBox').forEach(item => {
+    item.addEventListener('click', (e) => {
+      changeIsDoneStatus(e, e.target.checked, listToRefresh, args);
+    });
+  });
 }
 
 function displayAllTasks() {
   const todoArray = fetchTodoArrayFromLocalStorage();
   displayTasks(todoArray);
-  document.querySelectorAll('.delete').forEach(item => {
-    item.addEventListener('click', (e) => { deleteTodo(e, displayAllTasks); });
-  });
-  document.querySelectorAll('#isDoneCheckBox').forEach(item => {
-    item.addEventListener('click', (e) => {
-      changeIsDoneStatus(e, e.target.checked, displayAllTasks);
-    });
-  });
+  todoListenerDelete(displayAllTasks);
+  todoListenerIsDone(displayAllTasks);
 }
 
-function displaybyProject(array) {
-  // if (array === undefined || array.length === 0) {
-  //   return array;
-  // }
-  // const parent = document.getElementById('aside-project-list');
-  // const arraybyProject = [];
-  // for (let i = 0; i < array.length; i += 1) {
-  //   const child = parent.childNodes[i];
-  //   if (array[i].project === child.textContent) {
-  //     arraybyProject.push(array[i]);
-  //   }
-  // }
-  // displayTasks(arraybyProject);
-  // return array;
-  const btnbyProject = document.getElementById('btnbyProject');
-  console.log(btnbyProject);
+
+function displaybyProject(string) {
+  string = string.toLowerCase();
+  const arrayTodo = fetchTodoArrayFromLocalStorage();
+  const arrayProjects = [];
+  for (let i = 0; i < arrayTodo.length; i += 1) {
+    if (arrayTodo[i].project === string) {
+      arrayProjects.push(arrayTodo[i]);
+    }
+  }
+  displayTasks(arrayProjects);
+  todoListenerDelete(displaybyProject, string);
+  todoListenerIsDone(displaybyProject, string);
 }
 
 function displayTasksforToday() {
@@ -183,6 +200,21 @@ function displayTasksforToday() {
     }
   }
   displayTasks(arrayTodayTask);
+  todoListenerDelete(displayTasksforToday);
+  todoListenerIsDone(displayTasksforToday);
+}
+
+function displayTasksbyWeek() {
+  const array = fetchTodoArrayFromLocalStorage();
+  const arrayWeekTask = [];
+  array.forEach(obj => {
+    if (isSameWeek(new Date(), new Date(obj.duedate))) {
+      arrayWeekTask.push(obj);
+    }
+  });
+  displayTasks(arrayWeekTask);
+  todoListenerDelete(displayTasksbyWeek);
+  todoListenerIsDone(displayTasksbyWeek);
 }
 
 function submitTodoForm(e) {
@@ -199,13 +231,12 @@ function submitTodoForm(e) {
     todoDescription.value,
     date,
     todoPriority.checked,
-    selectProject.value,
+    selectProject.value.toLowerCase(),
     lastId(todosArray),
   );
   if (todosArray === undefined) {
     todosArray = [];
   }
-  console.log(todoDueDate.bulmaCalendar);
   todosArray.push(newTodo);
   saveTodoArrayInLocalStorage(todosArray);
   closeModal(e);
@@ -227,9 +258,11 @@ export {
   displayToDoModal,
   displayTasks,
   displayAllTasks,
+  displayTasksbyWeek,
   displaybyProject,
   displayTasksforToday,
   deleteTodoObjFromArray,
   deleteTodoHTML,
   loadProjects,
+  toggleActiveBtns,
 };

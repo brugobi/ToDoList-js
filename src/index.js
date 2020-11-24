@@ -10,16 +10,12 @@ import {
   loadProjects,
   displaybyProject,
   displayTasksbyWeek,
+  toggleActiveBtns,
 }
   from './functions';
 
-let arrayOfProjects = [];
-
-if (localStorage.getItem('arrayOfProjects') !== null) {
-  arrayOfProjects = JSON.parse(localStorage.getItem('arrayOfProjects'));
-} else {
+if (localStorage.getItem('arrayOfProjects') === null) {
   localStorage.setItem('arrayOfProjects', JSON.stringify(['hello', 'world']));
-  arrayOfProjects = JSON.parse(localStorage.getItem('arrayOfProjects'));
 }
 let arrayOfTodos = [];
 if (localStorage.getItem('arrayOfTodos') !== null) {
@@ -42,13 +38,14 @@ if (localStorage.getItem('arrayOfTodos') !== null) {
   }]));
   arrayOfTodos = JSON.parse(localStorage.getItem('arrayOfTodos'));
 }
-console.log(arrayOfTodos);
+
 function addEventListenerByClass(className, event, fn) {
   const list = document.getElementsByClassName(className);
   for (let i = 0, len = list.length; i < len; i += 1) {
     list[i].addEventListener(event, fn);
   }
 }
+
 const newTodoBtn = document.getElementById('newTodoFormBtn');
 newTodoBtn.addEventListener('click', () => {
   displayToDoModal();
@@ -80,15 +77,11 @@ btnWeekTasks.addEventListener('click', () => {
   displayTasksbyWeek();
 });
 
-window.addEventListener('DOMContentLoaded', (event) => {
-  loadProjects();
-  // const btnbyProject = document.getElementById('btnbyProject');
-  const btnbyProject = document.getElementById('aside-project-list');
-  btnbyProject.addEventListener('click', (e) => {
-    displaybyProject(e.target.innerText);
-  });
+const btnbyProject = document.getElementById('aside-project-list');
+btnbyProject.addEventListener('click', (e) => {
+  displaybyProject(e.target.innerText);
 });
 
-
-
-
+displayAllTasks();
+loadProjects();
+toggleActiveBtns();
