@@ -16,11 +16,11 @@ const customCheckBox = `
 `;
 const projectForm = `
 <div id="project-modal-form"class="modal is-active is-clipped">
-<div class="modal-background" id="delete-todo-modal"></div>
+<div class="modal-background" id="delete-modal"></div>
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">New Project</p>
-      <button id="close-project-modal" class="delete" aria-label="close"></button>
+      <button id="delete-modal" class="delete" aria-label="close"></button>
     </header>
     <section class="modal-card-body">
       <div class="container is-max-desktop">
@@ -35,7 +35,7 @@ const projectForm = `
             <button id="submit-project-form" class="button is-link">Submit</button>
           </div>
           <div class="control">
-            <button id="close-project-modal" class="button is-link is-light">Cancel</button>
+            <button id="delete-modal" class="button is-link is-light">Cancel</button>
           </div>
         </div>
       </div>
@@ -45,11 +45,11 @@ const projectForm = `
 `;
 const firstPart = `
 <div id="todo-modal-form" class="modal is-active is-clipped">
-  <div class="modal-background" id="delete-todo-modal"></div>
+  <div class="modal-background" id="delete-modal"></div>
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">Add a new To Do:</p>
-      <button id="delete-todo-modal" class="delete" aria-label="close"></button>
+      <button id="delete-modal" class="delete" aria-label="close"></button>
     </header>
     <section class="modal-card-body">
       <div id="form" class="container is-max-desktop">
@@ -93,7 +93,7 @@ const lastPart = `
     </section>
     <footer class="modal-card-foot">
       <button id="submit-todo-form" class="button is-success">Save changes</button>
-      <button id="delete-todo-modal" class="button">Cancel</button>
+      <button id="delete-modal" class="button">Cancel</button>
     </footer>
   </div>
 </div>`;
@@ -109,7 +109,7 @@ const appendProjectsToTodoForm = (projects) => {
 
   projects.forEach((element) => {
     const option = document.createElement('option');
-    option.innerText = element;
+    option.innerText = capitalizeFirstLetter(element);
     select.appendChild(option);
   });
 
@@ -212,10 +212,30 @@ function displayProjects(arrayOfProjects) {
   });
 }
 
+function createProjectForm() {
+  const modalContainer = document.getElementById('modalContainer');
+  modalContainer.innerHTML = projectForm;
+  document.getElementById('projectTitle').focus();
+}
+
+function appendProjectsToMenu(arrayOfProjects) {
+  const ul = document.getElementById('aside-project-list');
+  ul.innerHTML = '';
+  arrayOfProjects.forEach(project => {
+    const li = document.createElement('li');
+    li.setAttribute('id', 'btnbyProject');
+    const a = document.createElement('a');
+    a.innerText = capitalizeFirstLetter(project);
+    li.append(a);
+    ul.append(li);
+  });
+}
+
 export {
   createTodoForm,
   closeModal,
-  projectForm,
   displayTasks,
   displayProjects,
+  createProjectForm,
+  appendProjectsToMenu,
 };

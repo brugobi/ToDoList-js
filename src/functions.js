@@ -1,11 +1,14 @@
 import {
   format,
-  isSameWeek,
 } from 'date-fns';
 
 
 import {
-  createTodoForm, closeModal, projectForm, displayTasks, displayProjects,
+  createTodoForm,
+  closeModal,
+  displayTasks,
+  createProjectForm,
+  appendProjectsToMenu,
 } from './DOM';
 
 function sortDates(array) {
@@ -100,30 +103,28 @@ const todoConstructor = (title, description, duedate, priority, project, id) => 
   };
 };
 
-function createProjectForm(globalArray) {
-  const modalContainer = document.getElementById('modalContainer');
-  modalContainer.innerHTML = projectForm;
-  document.getElementById('projectTitle').focus();
-  const submitProjectbtn = document.getElementById('submit-project-form');
-  submitProjectbtn.addEventListener('click', () => {
-    const projectTitle = document.getElementById('projectTitle').value.toLowerCase();
-    if (!globalArray.includes(projectTitle)) {
-      globalArray.push(projectTitle);
-    }
-    const ul = document.getElementById('aside-project-list');
-    const li = document.createElement('li');
-    li.setAttribute('id', 'btnbyProject');
-    const a = document.createElement('a');
-    a.innerText = projectTitle;
-    li.append(a);
-    ul.append(li);
+function submitProjectForm(e) {
+  const arrayOfProjects = fetchProjectArrayFromLocalStorage();
+  const projectTitle = document.getElementById('projectTitle').value.toLowerCase();
+  if (arrayOfProjects.includes(projectTitle) || /^ *$/.test(projectTitle)) {
+    closeModal(e);
+  } else if (!arrayOfProjects.includes(projectTitle)) {
+    arrayOfProjects.push(projectTitle);
+    closeModal(e);
+    saveProjectArrayInLocalStorage(arrayOfProjects);
+    appendProjectsToMenu(fetchProjectArrayFromLocalStorage());
+  }
+}
 
-    modalContainer.innerHTML = '';
+function displayProjectModal() {
+  createProjectForm();
+
+  const submitProjectbtn = document.getElementById('submit-project-form');
+  submitProjectbtn.addEventListener('click', (e) => {
+    submitProjectForm(e);
   });
-  document.querySelectorAll('#close-project-modal').forEach(item => {
-    item.addEventListener('click', () => {
-      modalContainer.innerHTML = '';
-    });
+  document.querySelectorAll('#delete-modal').forEach(item => {
+    item.addEventListener('click', e => { closeModal(e); });
   });
 }
 
@@ -138,8 +139,7 @@ function changeIsDoneStatus(e, value, callback) {
 }
 
 function loadProjects() {
-  const arrayOfProjects = fetchProjectArrayFromLocalStorage();
-  displayProjects(arrayOfProjects);
+  appendProjectsToMenu(fetchProjectArrayFromLocalStorage());
 }
 
 function displayAllTasks() {
@@ -155,16 +155,22 @@ function displayAllTasks() {
   });
 }
 
-function displaybyProject(string) {
-  const arrayTodo = fetchTodoArrayFromLocalStorage();
-  const arrayProjects = [];
-  const parent = document.getElementById('aside-project-list');
-  for (let i = 0; i < arrayTodo.length; i += 1) {
-    if (arrayTodo[i].project === string) {
-      arrayProjects.push(arrayTodo[i]);
-    }
-  }
-  displayTasks(arrayProjects);
+function displaybyProject(array) {
+  // if (array === undefined || array.length === 0) {
+  //   return array;
+  // }
+  // const parent = document.getElementById('aside-project-list');
+  // const arraybyProject = [];
+  // for (let i = 0; i < array.length; i += 1) {
+  //   const child = parent.childNodes[i];
+  //   if (array[i].project === child.textContent) {
+  //     arraybyProject.push(array[i]);
+  //   }
+  // }
+  // displayTasks(arraybyProject);
+  // return array;
+  const btnbyProject = document.getElementById('btnbyProject');
+  console.log(btnbyProject);
 }
 
 function displayTasksforToday() {
@@ -178,18 +184,6 @@ function displayTasksforToday() {
   }
   displayTasks(arrayTodayTask);
 }
-
-function displayTasksbyWeek() {
-  const array = fetchTodoArrayFromLocalStorage();
-  const arrayWeekTask = [];
-  array.forEach(obj => {
-    if (isSameWeek(new Date(), new Date(obj.duedate))) {
-      arrayWeekTask.push(obj)
-    }
-  });
-  displayTasks(arrayWeekTask);
-}
-
 
 function submitTodoForm(e) {
   let newTodo = {};
@@ -223,13 +217,13 @@ function displayToDoModal() {
   formSubmit.addEventListener('click', (e) => {
     submitTodoForm(e);
   });
-  document.querySelectorAll('#delete-todo-modal').forEach(item => {
+  document.querySelectorAll('#delete-modal').forEach(item => {
     item.addEventListener('click', e => { closeModal(e); });
   });
 }
 
 export {
-  createProjectForm,
+  displayProjectModal,
   displayToDoModal,
   displayTasks,
   displayAllTasks,
@@ -238,5 +232,4 @@ export {
   deleteTodoObjFromArray,
   deleteTodoHTML,
   loadProjects,
-  displayTasksbyWeek,
 };
