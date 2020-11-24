@@ -12,8 +12,9 @@ $fourth: #f6d55c;
 $fifth: #ed553b;
 $is-success: #ed553b;
 $form-color: #00d1b2;
-$soft-gray: rgba(204,204,204, 0.6);
-$dark-gray: rgb(170,170,170);
+$soft-gray: rgba(204, 204, 204, 0.6);
+$dark-gray: rgb(170, 170, 170);
+
 #todoDisplay {
   width: 100%;
 }
@@ -21,7 +22,7 @@ $dark-gray: rgb(170,170,170);
 body {
   background-color: $background;
   min-height: 100vh;
-  font-family: 'Quicksand', 'Open Sans', 'Helvetica Neue', sans-serif
+  font-family: 'Quicksand', 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .navbar {
@@ -41,7 +42,7 @@ body {
   padding: 0;
   padding-left: 2rem;
   min-height: 100vh;
-  font-family: 'Roboto Slab', 'Open Sans', 'Helvetica Neue', sans-serif
+  font-family: 'Roboto Slab', 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .aside-menu {
@@ -160,15 +161,15 @@ body {
   background-color: $form-color;
 }
 
+td {
+  position: relative;
+  padding: 5px 10px;
+}
+
 .table td,
 .table th {
   vertical-align: middle;
   border: none;
-}
-
-td {
-  position: relative;
-  padding: 5px 10px;
 }
 
 tr.strikeout {
@@ -176,7 +177,7 @@ tr.strikeout {
   background-color: $soft-gray;
 }
 
-tr.strikeout td:before {
+tr.strikeout td::before {
   content: " ";
   position: absolute;
   top: 50%;
@@ -184,8 +185,10 @@ tr.strikeout td:before {
   border-bottom: 1px solid $soft-gray;
   width: 100%;
 }
+
 tr.priority-todo {
   background-color: rgba(246, 213, 92, 0.4);
+
   td {
     font-weight: 600;
   }
