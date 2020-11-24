@@ -25,7 +25,7 @@
 
 ## Live Demo
 
-- You can click on this [link](https://raw.githack.com/brugobi/restaurant_page-js/feature/dist/index.html)
+- You can click on this [link](https://raw.githack.com/brugobi/ToDoList-js/todolist/dist/index.html)
 
 ## Getting Started
 
