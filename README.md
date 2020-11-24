@@ -1,4 +1,4 @@
-# restaurant_page-js
+# ToDoList - JS
 
 > This is a responsive ToDoList page.
 
