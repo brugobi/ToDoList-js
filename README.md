@@ -9,7 +9,7 @@
 - switch button to change the status of tasks that are organized by priority;
 - SideBar with links to display the tasks by: Today, Week, Projects or All of them.
 
-![home_page](./screenshot.webm)
+![home_page](./screenshot.gif)
 
 ## Built With
 
