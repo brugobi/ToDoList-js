@@ -190,6 +190,11 @@ function displayTasks(array) {
     td.appendChild(deleteBtn);
     tr.append(td);
     tr.setAttribute('id', `${object.id}`);
+    if (object.isDone) {
+      tr.classList.add('strikeout');
+    } else if (object.priority) {
+      tr.classList.add('priority-todo');
+    }
     todoDisplay.append(tr);
   });
 }

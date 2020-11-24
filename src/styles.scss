@@ -10,7 +10,8 @@ $fourth: #f6d55c;
 $fifth: #ed553b;
 $is-success: #ed553b;
 $form-color: #00d1b2;
-
+$soft-gray: rgba(204,204,204, 0.6);
+$dark-gray: rgb(170,170,170);
 #todoDisplay {
   width: 100%;
 }
@@ -63,19 +64,6 @@ body {
 
 .menu-list a.is-active {
   background-color: #3caea3;
-}
-
-tr.strikeout {
-  color: gray;
-}
-
-tr.strikeout td::before {
-  content: " ";
-  position: absolute;
-  top: 50%;
-  left: 0;
-  border-bottom: 1px solid #111;
-  width: 100%;
 }
 
 .input_wrapper {
@@ -171,4 +159,29 @@ tr.strikeout td::before {
 .table td,
 .table th {
   vertical-align: middle;
+}
+
+td {
+  position: relative;
+  padding: 5px 10px;
+}
+
+tr.strikeout {
+  color: $dark-gray;
+  background-color: $soft-gray;
+}
+
+tr.strikeout td:before {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-bottom: 1px solid $soft-gray;
+  width: 100%;
+}
+tr.priority-todo {
+  background-color: rgba(246, 213, 92, 0.4);
+  td {
+    font-weight: 600;
+  }
 }
