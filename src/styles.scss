@@ -2,6 +2,8 @@
 
 @import "~bulma/bulma";
 @import "~bulma-calendar";
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 $background: #173f5f;
 $secondary: #20639b;
@@ -19,6 +21,7 @@ $dark-gray: rgb(170,170,170);
 body {
   background-color: $background;
   min-height: 100vh;
+  font-family: 'Quicksand', 'Open Sans', 'Helvetica Neue', sans-serif
 }
 
 .navbar {
@@ -38,6 +41,7 @@ body {
   padding: 0;
   padding-left: 2rem;
   min-height: 100vh;
+  font-family: 'Roboto Slab', 'Open Sans', 'Helvetica Neue', sans-serif
 }
 
 .aside-menu {
@@ -159,6 +163,7 @@ body {
 .table td,
 .table th {
   vertical-align: middle;
+  border: none;
 }
 
 td {
@@ -184,4 +189,9 @@ tr.priority-todo {
   td {
     font-weight: 600;
   }
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0 3px;
 }
