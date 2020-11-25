@@ -39,12 +39,12 @@ if (localStorage.getItem('arrayOfTodos') !== null) {
   arrayOfTodos = JSON.parse(localStorage.getItem('arrayOfTodos'));
 }
 
-function addEventListenerByClass(className, event, fn) {
+const addEventListenerByClass = (className, event, fn) => {
   const list = document.getElementsByClassName(className);
   for (let i = 0, len = list.length; i < len; i += 1) {
     list[i].addEventListener(event, fn);
   }
-}
+};
 
 const newTodoBtn = document.getElementById('newTodoFormBtn');
 newTodoBtn.addEventListener('click', () => {

@@ -12,19 +12,17 @@ import {
   appendProjectsToMenu,
 } from './DOM';
 
-function sortDates(array) {
-  return array.sort((a, b) => {
-    if (a.duedate < b.duedate) {
-      return -1;
-    }
-    if (a.duedate > b.duedate) {
-      return 1;
-    }
-    return 0;
-  });
-}
+const sortDates = (array) => array.sort((a, b) => {
+  if (a.duedate < b.duedate) {
+    return -1;
+  }
+  if (a.duedate > b.duedate) {
+    return 1;
+  }
+  return 0;
+});
 
-function orderTodoArray(todoArray) {
+const orderTodoArray = (todoArray) => {
   let priorityTodo = [];
   let noPriorityTodo = [];
   let doneTodo = [];
@@ -41,7 +39,7 @@ function orderTodoArray(todoArray) {
   noPriorityTodo = sortDates(noPriorityTodo);
   doneTodo = sortDates(doneTodo);
   return priorityTodo.concat(noPriorityTodo, doneTodo);
-}
+};
 
 const fetchTodoArrayFromLocalStorage = () => {
   const todoArray = JSON.parse(localStorage.getItem('arrayOfTodos') || '[]');
@@ -60,18 +58,18 @@ const saveProjectArrayInLocalStorage = (projectsArray) => {
   localStorage.setItem('arrayOfProjects', JSON.stringify(projectsArray));
 };
 
-function deleteTodoObjFromArray(array, domId) {
+const deleteTodoObjFromArray = (array, domId) => {
   const newArray = array.filter(object => object.id !== parseInt(domId, 10));
   return newArray;
-}
+};
 
-function deleteTodo(e, callback, args) {
+const deleteTodo = (e, callback, args) => {
   const todoArray = fetchTodoArrayFromLocalStorage()
     .filter(object => object.id !== parseInt(e.target.id, 10));
   saveTodoArrayInLocalStorage(todoArray);
   callback(args);
-}
-function changeIsDoneStatus(e, value, callback, args) {
+};
+const changeIsDoneStatus = (e, value, callback, args) => {
   const array = fetchTodoArrayFromLocalStorage();
   const pos = array.findIndex(obj => obj.id === parseInt(e.target.closest('tr').id, 10));
   array[pos].isDone = value;
@@ -79,13 +77,13 @@ function changeIsDoneStatus(e, value, callback, args) {
   setTimeout(() => {
     callback(args);
   }, 500);
-}
+};
 
-function deleteTodoHTML(target) {
+const deleteTodoHTML = (target) => {
   target.parentNode.parentNode.remove();
-}
+};
 
-function lastId(todosArray) {
+const lastId = (todosArray) => {
   let biggestID = 0;
   if (todosArray === undefined || todosArray.length === 0) {
     biggestID = 1;
@@ -97,7 +95,7 @@ function lastId(todosArray) {
     });
   }
   return biggestID;
-}
+};
 
 const todoConstructor = (title, description, duedate, priority, project, id) => {
   const isDone = false;
@@ -113,7 +111,7 @@ const todoConstructor = (title, description, duedate, priority, project, id) => 
   };
 };
 
-function toggleActiveBtns() {
+const toggleActiveBtns = () => {
   const btns = document.getElementsByClassName('side-menu-btn');
   for (let i = 0; i < btns.length; i += 1) {
     btns[i].addEventListener('click', () => {
@@ -122,9 +120,9 @@ function toggleActiveBtns() {
       btns[i].className += ' is-active';
     });
   }
-}
+};
 
-function submitProjectForm(e) {
+const submitProjectForm = (e) => {
   const arrayOfProjects = fetchProjectArrayFromLocalStorage();
   const projectTitle = document.getElementById('projectTitle').value.toLowerCase();
   if (arrayOfProjects.includes(projectTitle) || /^ *$/.test(projectTitle)) {
@@ -136,9 +134,9 @@ function submitProjectForm(e) {
     appendProjectsToMenu(fetchProjectArrayFromLocalStorage());
   }
   toggleActiveBtns();
-}
+};
 
-function displayProjectModal() {
+const displayProjectModal = () => {
   createProjectForm();
 
   const submitProjectbtn = document.getElementById('submit-project-form');
@@ -148,35 +146,35 @@ function displayProjectModal() {
   document.querySelectorAll('#delete-modal').forEach(item => {
     item.addEventListener('click', e => { closeModal(e); });
   });
-}
+};
 
-function loadProjects() {
+const loadProjects = () => {
   appendProjectsToMenu(fetchProjectArrayFromLocalStorage());
-}
+};
 
-function todoListenerDelete(listToRefresh, args) {
+const todoListenerDelete = (listToRefresh, args) => {
   document.querySelectorAll('.delete').forEach(item => {
     item.addEventListener('click', (e) => { deleteTodo(e, listToRefresh, args); });
   });
-}
+};
 
-function todoListenerIsDone(listToRefresh, args) {
+const todoListenerIsDone = (listToRefresh, args) => {
   document.querySelectorAll('#isDoneCheckBox').forEach(item => {
     item.addEventListener('click', (e) => {
       changeIsDoneStatus(e, e.target.checked, listToRefresh, args);
     });
   });
-}
+};
 
-function displayAllTasks() {
+const displayAllTasks = () => {
   const todoArray = fetchTodoArrayFromLocalStorage();
   displayTasks(todoArray);
   todoListenerDelete(displayAllTasks);
   todoListenerIsDone(displayAllTasks);
-}
+};
 
 
-function displaybyProject(string) {
+const displaybyProject = (string) => {
   string = string.toLowerCase();
   const arrayTodo = fetchTodoArrayFromLocalStorage();
   const arrayProjects = [];
@@ -188,9 +186,9 @@ function displaybyProject(string) {
   displayTasks(arrayProjects);
   todoListenerDelete(displaybyProject, string);
   todoListenerIsDone(displaybyProject, string);
-}
+};
 
-function displayTasksforToday() {
+const displayTasksforToday = () => {
   const array = fetchTodoArrayFromLocalStorage();
   const date = `${format(new Date(), 'yyyy-M-d')}`;
   const arrayTodayTask = [];
@@ -202,9 +200,9 @@ function displayTasksforToday() {
   displayTasks(arrayTodayTask);
   todoListenerDelete(displayTasksforToday);
   todoListenerIsDone(displayTasksforToday);
-}
+};
 
-function displayTasksbyWeek() {
+const displayTasksbyWeek = () => {
   const array = fetchTodoArrayFromLocalStorage();
   const arrayWeekTask = [];
   array.forEach(obj => {
@@ -215,9 +213,9 @@ function displayTasksbyWeek() {
   displayTasks(arrayWeekTask);
   todoListenerDelete(displayTasksbyWeek);
   todoListenerIsDone(displayTasksbyWeek);
-}
+};
 
-function submitTodoForm(e) {
+const submitTodoForm = (e) => {
   let newTodo = {};
   let todosArray = fetchTodoArrayFromLocalStorage();
   const todoTitle = document.getElementById('todoTitle');
@@ -240,9 +238,9 @@ function submitTodoForm(e) {
   todosArray.push(newTodo);
   saveTodoArrayInLocalStorage(todosArray);
   closeModal(e);
-}
+};
 
-function displayToDoModal() {
+const displayToDoModal = () => {
   createTodoForm(fetchProjectArrayFromLocalStorage());
   const formSubmit = document.getElementById('submit-todo-form');
   formSubmit.addEventListener('click', (e) => {
@@ -251,7 +249,7 @@ function displayToDoModal() {
   document.querySelectorAll('#delete-modal').forEach(item => {
     item.addEventListener('click', e => { closeModal(e); });
   });
-}
+};
 
 export {
   displayProjectModal,

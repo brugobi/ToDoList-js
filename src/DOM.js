@@ -98,9 +98,7 @@ const lastPart = `
   </div>
 </div>`;
 
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
+const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
 const appendProjectsToTodoForm = (projects) => {
   const wrapper = document.createElement('div');
@@ -117,7 +115,7 @@ const appendProjectsToTodoForm = (projects) => {
   return wrapper;
 };
 
-function createTodoForm(arrayProjects) {
+const createTodoForm = (arrayProjects) => {
   const modalContainer = document.getElementById('modalContainer');
   modalContainer.innerHTML = `${firstPart}${appendProjectsToTodoForm(arrayProjects).innerHTML}${lastPart}`;
   document.getElementById('todoTitle').focus();
@@ -130,9 +128,9 @@ function createTodoForm(arrayProjects) {
     showFooter: false,
     startDate: new Date(),
   });
-}
+};
 
-function displayTasks(array) {
+const displayTasks = (array) => {
   const todoDisplay = document.getElementById('todoDisplay');
   todoDisplay.innerHTML = `
   <tr>
@@ -197,15 +195,15 @@ function displayTasks(array) {
     }
     todoDisplay.append(tr);
   });
-}
+};
 
-function closeModal(e) {
+const closeModal = (e) => {
   e.stopPropagation();
   const modalContainer = document.getElementById('modalContainer');
   modalContainer.innerHTML = '';
-}
+};
 
-function displayProjects(arrayOfProjects) {
+const displayProjects = (arrayOfProjects) => {
   const ul = document.getElementById('aside-project-list');
   arrayOfProjects.forEach(project => {
     const li = document.createElement('li');
@@ -215,15 +213,15 @@ function displayProjects(arrayOfProjects) {
     li.appendChild(a);
     a.innerHTML = project;
   });
-}
+};
 
-function createProjectForm() {
+const createProjectForm = () => {
   const modalContainer = document.getElementById('modalContainer');
   modalContainer.innerHTML = projectForm;
   document.getElementById('projectTitle').focus();
-}
+};
 
-function appendProjectsToMenu(arrayOfProjects) {
+const appendProjectsToMenu = (arrayOfProjects) => {
   const ul = document.getElementById('aside-project-list');
   ul.innerHTML = '';
   arrayOfProjects.forEach(project => {
@@ -235,7 +233,7 @@ function appendProjectsToMenu(arrayOfProjects) {
     li.append(a);
     ul.append(li);
   });
-}
+};
 
 export {
   createTodoForm,
