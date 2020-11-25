@@ -1,0 +1,200 @@
+@charset "utf-8";
+
+@import "~bulma/bulma";
+@import "~bulma-calendar";
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+$background: #173f5f;
+$secondary: #20639b;
+$terciary: #3caea3;
+$fourth: #f6d55c;
+$fifth: #ed553b;
+$is-success: #ed553b;
+$form-color: #00d1b2;
+$soft-gray: rgba(204, 204, 204, 0.6);
+$dark-gray: rgb(170, 170, 170);
+
+#todoDisplay {
+  width: 100%;
+}
+
+body {
+  background-color: $background;
+  min-height: 100vh;
+  font-family: 'Quicksand', 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.navbar {
+  background-color: $secondary;
+  position: fixed;
+  min-width: 100%;
+  min-height: 75px;
+}
+
+.main-container {
+  padding: 75px 2rem 0 0;
+  max-width: 100%;
+}
+
+.aside-container {
+  background-color: $secondary;
+  padding: 0;
+  padding-left: 2rem;
+  min-height: 100vh;
+  font-family: 'Roboto Slab', 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.aside-menu {
+  position: sticky;
+  top: 0;
+  padding-top: 75px;
+}
+
+.menu-btn {
+  min-width: 45%;
+}
+
+.menu-list a {
+  color: white;
+}
+
+.button.is-primary {
+  background-color: $fifth;
+}
+
+.button.is-warning {
+  background-color: $fourth;
+}
+
+.menu-list a.is-active {
+  background-color: #3caea3;
+}
+
+.input_wrapper {
+  width: 80px;
+  height: 40px;
+  position: relative;
+  cursor: pointer;
+}
+
+.input_wrapper input[type="checkbox"] {
+  width: 80px;
+  height: 40px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: $is-success;
+  border-radius: 2px;
+  position: relative;
+  outline: 0;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.input_wrapper input[type="checkbox"]::after {
+  position: absolute;
+  content: "";
+  top: 3px;
+  left: 3px;
+  width: 34px;
+  height: 34px;
+  background: #dfeaec;
+  z-index: 2;
+  border-radius: 2px;
+  -webkit-transition: all 0.35s;
+  transition: all 0.35s;
+}
+
+.input_wrapper svg {
+  position: absolute;
+  top: 50%;
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  fill: #fff;
+  -webkit-transition: all 0.35s;
+  transition: all 0.35s;
+  z-index: 1;
+}
+
+.input_wrapper .is_checked {
+  width: 18px;
+  left: 18%;
+  -webkit-transform: translateX(190%) translateY(-30%) scale(0);
+  transform: translateX(190%) translateY(-30%) scale(0);
+}
+
+.input_wrapper .is_unchecked {
+  width: 15px;
+  right: 15%;
+  top: 18px;
+  -webkit-transform: translateX(0) translateY(-30%) scale(1);
+  transform: translateX(0) translateY(-30%) scale(1);
+}
+
+/* Checked State */
+.input_wrapper input[type="checkbox"]:checked {
+  background: $form-color;
+}
+
+.input_wrapper input[type="checkbox"]:checked::after {
+  left: calc(100% - 37px);
+}
+
+.input_wrapper input[type="checkbox"]:checked + .is_checked {
+  -webkit-transform: translateX(0) translateY(-30%) scale(1);
+  transform: translateX(0) translateY(-30%) scale(1);
+}
+
+.input_wrapper input[type="checkbox"]:checked ~ .is_unchecked {
+  -webkit-transform: translateX(-190%) translateY(-30%) scale(0);
+  transform: translateX(-190%) translateY(-30%) scale(0);
+}
+
+.control.bulma-calendar {
+  display: flex;
+  justify-content: center;
+}
+
+.button.is-success {
+  background-color: $form-color;
+}
+
+td {
+  position: relative;
+  padding: 5px 10px;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+  border: none;
+}
+
+tr.strikeout {
+  color: $dark-gray;
+  background-color: $soft-gray;
+}
+
+tr.strikeout td::before {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-bottom: 1px solid $soft-gray;
+  width: 100%;
+}
+
+tr.priority-todo {
+  background-color: rgba(246, 213, 92, 0.4);
+
+  td {
+    font-weight: 600;
+  }
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0 3px;
+}
