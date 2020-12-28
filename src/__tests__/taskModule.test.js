@@ -17,3 +17,13 @@ test('Wrong task creation without title', () => {
     title: undefined, description: 'Hey Im a task', duedate: '10-29-2024', priority: false, project: 'Test Project', id: 3, isDone: false,
   });
 });
+
+test('isDone is false', () => {
+  const newTask = new Task();
+  expect(newTask.isDone).toBe(false);
+});
+
+test('the id is incremented by 1', () => {
+  const newTask = new Task(undefined, 'Hey Im a task', '10-29-2024', false, 'Test Project', 2);
+  expect(newTask.id).toBe(3);
+});
