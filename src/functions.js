@@ -3,6 +3,8 @@ import {
   isSameWeek,
 } from 'date-fns';
 
+import Task from './taskmodule';
+
 
 import {
   createTodoForm,
@@ -95,20 +97,6 @@ const lastId = (todosArray) => {
     });
   }
   return biggestID;
-};
-
-const todoConstructor = (title, description, duedate, priority, project, id) => {
-  const isDone = false;
-  id += 1;
-  return {
-    title,
-    description,
-    duedate,
-    priority,
-    project,
-    isDone,
-    id,
-  };
 };
 
 const toggleActiveBtns = () => {
@@ -224,7 +212,7 @@ const submitTodoForm = (e) => {
   const todoDueDate = document.getElementById('todoDueDate');
   const todoPriority = document.getElementById('todoPriority');
   const date = new Date(`${format(todoDueDate.bulmaCalendar.date.start, 'yyyy-M-d')}T${format(todoDueDate.bulmaCalendar.time.start, 'HH:mm')}`);
-  newTodo = todoConstructor(
+  newTodo = new Task(
     todoTitle.value,
     todoDescription.value,
     date,
