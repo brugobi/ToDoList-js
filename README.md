@@ -20,6 +20,7 @@
 - Bulma
 - SCSS
 - HTML
+- Jest
 - ESLint
 - Stylelint
 
@@ -52,6 +53,13 @@ $ git clone git@github.com:brugobi/ToDoList-js.git
 $ npm install
 ```
 
+### Test
+
+- to test it run the command:
+
+```
+$ npm test
+```
 ### Usage
 
 Start the server:

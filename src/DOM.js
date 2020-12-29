@@ -1,5 +1,6 @@
 import bulmaCalendar from 'bulma-calendar/dist/js/bulma-calendar';
 import { format, formatDistanceToNow, isBefore } from 'date-fns';
+import { capitalizeFirstLetter } from './pureFunctions';
 
 const customCheckBox = `
 <div class="switch_box box_4">
@@ -97,8 +98,6 @@ const lastPart = `
     </footer>
   </div>
 </div>`;
-
-const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
 const appendProjectsToTodoForm = (projects) => {
   const wrapper = document.createElement('div');
@@ -221,25 +220,10 @@ const createProjectForm = () => {
   document.getElementById('projectTitle').focus();
 };
 
-const appendProjectsToMenu = (arrayOfProjects) => {
-  const ul = document.getElementById('aside-project-list');
-  ul.innerHTML = '';
-  arrayOfProjects.forEach(project => {
-    const li = document.createElement('li');
-    li.setAttribute('id', 'btnbyProject');
-    const a = document.createElement('a');
-    a.classList.add('side-menu-btn');
-    a.innerText = capitalizeFirstLetter(project);
-    li.append(a);
-    ul.append(li);
-  });
-};
-
 export {
+  createProjectForm,
   createTodoForm,
   closeModal,
   displayTasks,
   displayProjects,
-  createProjectForm,
-  appendProjectsToMenu,
 };
