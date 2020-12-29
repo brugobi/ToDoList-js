@@ -8,13 +8,13 @@ import {
   lastId,
 } from '../pureFunctions';
 
+const todoArray = localStorage.setItem('arrayOfTodos', JSON.stringify([{
+  title: 'I have priority', description: 'Lorem', duedate: '2020-11-23T01:00:00.000', priority: true, project: 'hello', isDone: false, id: 1,
+}, {
+  title: 'I have priority', description: 'ipsum', duedate: '2020-11-26T16:00:00.000', priority: true, project: 'hello', isDone: false, id: 2,
+}]));
+
 test('fetch TodoArray', () => {
-  const todoArray = localStorage.setItem('arrayOfTodos', JSON.stringify([{
-    title: 'I have priority', description: 'Lorem', duedate: '2020-11-23T01:00:00.000', priority: true, project: 'hello', isDone: false, id: 1,
-  }, {
-    title: 'I have priority', description: 'ipsum', duedate: '2020-11-26T16:00:00.000', priority: true, project: 'hello', isDone: false, id: 2,
-    }]));
-  
   expect(fetchTodoArrayFromLocalStorage()).toHaveLength(2);
   expect(Array.isArray(fetchTodoArrayFromLocalStorage())).toBe(true);
   expect(fetchTodoArrayFromLocalStorage()).toEqual(
@@ -40,6 +40,23 @@ test('fetchProjectArrayFromLocalStorage', () => {
   );
 
 });
+
+//add this one
+test('deleteTodoObjFromArray', () => {
+  expect(deleteTodoObjFromArray(fetchTodoArrayFromLocalStorage(), 1)).toHaveLength(1);
+  expect(fetchTodoArrayFromLocalStorage()).toEqual(
+    expect.arrayContaining([
+      expect.not.objectContaining({ id: 1 }),
+      expect.not.objectContaining({ description: 'Lorem' })
+    ])
+  )
+});
+
+test('lastId', () => {
+  expect(lastId(fetchTodoArrayFromLocalStorage())).toBe(2);
+});
+
+//finish here
 
 test('capitalizeFirstLetter', () => {
   expect(capitalizeFirstLetter('hello')).toBe('Hello');
