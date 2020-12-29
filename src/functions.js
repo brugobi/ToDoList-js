@@ -5,64 +5,48 @@ import {
 
 import Task from './taskmodule';
 
-
 import {
-  createTodoForm,
   closeModal,
   displayTasks,
+  createTodoForm,
   createProjectForm,
-  appendProjectsToMenu,
 } from './DOM';
 
-const sortDates = (array) => array.sort((a, b) => {
-  if (a.duedate < b.duedate) {
-    return -1;
-  }
-  if (a.duedate > b.duedate) {
-    return 1;
-  }
-  return 0;
-});
+import {
+  fetchTodoArrayFromLocalStorage,
+  fetchProjectArrayFromLocalStorage,
+  saveTodoArrayInLocalStorage,
+  saveProjectArrayInLocalStorage,
+  capitalizeFirstLetter,
+} from './pureFunctions';
 
-const orderTodoArray = (todoArray) => {
-  let priorityTodo = [];
-  let noPriorityTodo = [];
-  let doneTodo = [];
-  todoArray.forEach((object) => {
-    if (object.isDone === true) {
-      doneTodo.push(object);
-    } else if (object.priority === true) {
-      priorityTodo.push(object);
-    } else {
-      noPriorityTodo.push(object);
-    }
+const appendProjectsToMenu = (arrayOfProjects) => {
+  const ul = document.getElementById('aside-project-list');
+  ul.innerHTML = '';
+  arrayOfProjects.forEach(project => {
+    const li = document.createElement('li');
+    li.setAttribute('id', 'btnbyProject');
+    const a = document.createElement('a');
+    a.classList.add('side-menu-btn');
+    a.innerText = capitalizeFirstLetter(project);
+    li.append(a);
+    ul.append(li);
   });
-  priorityTodo = sortDates(priorityTodo);
-  noPriorityTodo = sortDates(noPriorityTodo);
-  doneTodo = sortDates(doneTodo);
-  return priorityTodo.concat(noPriorityTodo, doneTodo);
 };
 
-const fetchTodoArrayFromLocalStorage = () => {
-  const todoArray = JSON.parse(localStorage.getItem('arrayOfTodos') || '[]');
-  return todoArray;
-};
-const fetchProjectArrayFromLocalStorage = () => {
-  const projectsArray = JSON.parse(localStorage.getItem('arrayOfProjects') || '[]');
-  return projectsArray;
+const deleteTodoHTML = (target) => {
+  target.parentNode.parentNode.remove();
 };
 
-const saveTodoArrayInLocalStorage = (todoArray) => {
-  const orderedArray = orderTodoArray(todoArray);
-  localStorage.setItem('arrayOfTodos', JSON.stringify(orderedArray));
-};
-const saveProjectArrayInLocalStorage = (projectsArray) => {
-  localStorage.setItem('arrayOfProjects', JSON.stringify(projectsArray));
-};
-
-const deleteTodoObjFromArray = (array, domId) => {
-  const newArray = array.filter(object => object.id !== parseInt(domId, 10));
-  return newArray;
+const toggleActiveBtns = () => {
+  const btns = document.getElementsByClassName('side-menu-btn');
+  for (let i = 0; i < btns.length; i += 1) {
+    btns[i].addEventListener('click', () => {
+      const current = document.getElementsByClassName('is-active');
+      current[0].className = current[0].className.replace(' is-active', '');
+      btns[i].className += ' is-active';
+    });
+  }
 };
 
 const deleteTodo = (e, callback, args) => {
@@ -71,18 +55,11 @@ const deleteTodo = (e, callback, args) => {
   saveTodoArrayInLocalStorage(todoArray);
   callback(args);
 };
-const changeIsDoneStatus = (e, value, callback, args) => {
-  const array = fetchTodoArrayFromLocalStorage();
-  const pos = array.findIndex(obj => obj.id === parseInt(e.target.closest('tr').id, 10));
-  array[pos].isDone = value;
-  saveTodoArrayInLocalStorage(array);
-  setTimeout(() => {
-    callback(args);
-  }, 500);
-};
 
-const deleteTodoHTML = (target) => {
-  target.parentNode.parentNode.remove();
+const todoListenerDelete = (listToRefresh, args) => {
+  document.querySelectorAll('.delete').forEach(item => {
+    item.addEventListener('click', (e) => { deleteTodo(e, listToRefresh, args); });
+  });
 };
 
 const lastId = (todosArray) => {
@@ -99,51 +76,18 @@ const lastId = (todosArray) => {
   return biggestID;
 };
 
-const toggleActiveBtns = () => {
-  const btns = document.getElementsByClassName('side-menu-btn');
-  for (let i = 0; i < btns.length; i += 1) {
-    btns[i].addEventListener('click', () => {
-      const current = document.getElementsByClassName('is-active');
-      current[0].className = current[0].className.replace(' is-active', '');
-      btns[i].className += ' is-active';
-    });
-  }
-};
-
-const submitProjectForm = (e) => {
-  const arrayOfProjects = fetchProjectArrayFromLocalStorage();
-  const projectTitle = document.getElementById('projectTitle').value.toLowerCase();
-  if (arrayOfProjects.includes(projectTitle) || /^ *$/.test(projectTitle)) {
-    closeModal(e);
-  } else if (!arrayOfProjects.includes(projectTitle)) {
-    arrayOfProjects.push(projectTitle);
-    closeModal(e);
-    saveProjectArrayInLocalStorage(arrayOfProjects);
-    appendProjectsToMenu(fetchProjectArrayFromLocalStorage());
-  }
-  toggleActiveBtns();
-};
-
-const displayProjectModal = () => {
-  createProjectForm();
-
-  const submitProjectbtn = document.getElementById('submit-project-form');
-  submitProjectbtn.addEventListener('click', (e) => {
-    submitProjectForm(e);
-  });
-  document.querySelectorAll('#delete-modal').forEach(item => {
-    item.addEventListener('click', e => { closeModal(e); });
-  });
+const changeIsDoneStatus = (e, value, callback, args) => {
+  const array = fetchTodoArrayFromLocalStorage();
+  const pos = array.findIndex(obj => obj.id === parseInt(e.target.closest('tr').id, 10));
+  array[pos].isDone = value;
+  saveTodoArrayInLocalStorage(array);
+  setTimeout(() => {
+    callback(args);
+  }, 500);
 };
 
 const loadProjects = () => {
   appendProjectsToMenu(fetchProjectArrayFromLocalStorage());
-};
-
-const todoListenerDelete = (listToRefresh, args) => {
-  document.querySelectorAll('.delete').forEach(item => {
-    item.addEventListener('click', (e) => { deleteTodo(e, listToRefresh, args); });
-  });
 };
 
 const todoListenerIsDone = (listToRefresh, args) => {
@@ -160,7 +104,6 @@ const displayAllTasks = () => {
   todoListenerDelete(displayAllTasks);
   todoListenerIsDone(displayAllTasks);
 };
-
 
 const displaybyProject = (string) => {
   string = string.toLowerCase();
@@ -203,6 +146,20 @@ const displayTasksbyWeek = () => {
   todoListenerIsDone(displayTasksbyWeek);
 };
 
+const submitProjectForm = (e) => {
+  const arrayOfProjects = fetchProjectArrayFromLocalStorage();
+  const projectTitle = document.getElementById('projectTitle').value.toLowerCase();
+  if (arrayOfProjects.includes(projectTitle) || /^ *$/.test(projectTitle)) {
+    closeModal(e);
+  } else if (!arrayOfProjects.includes(projectTitle)) {
+    arrayOfProjects.push(projectTitle);
+    closeModal(e);
+    saveProjectArrayInLocalStorage(arrayOfProjects);
+    appendProjectsToMenu(fetchProjectArrayFromLocalStorage());
+  }
+  toggleActiveBtns();
+};
+
 const submitTodoForm = (e) => {
   let newTodo = {};
   let todosArray = fetchTodoArrayFromLocalStorage();
@@ -239,16 +196,29 @@ const displayToDoModal = () => {
   });
 };
 
+const displayProjectModal = () => {
+  createProjectForm();
+
+  const submitProjectbtn = document.getElementById('submit-project-form');
+  submitProjectbtn.addEventListener('click', (e) => {
+    submitProjectForm(e);
+  });
+  document.querySelectorAll('#delete-modal').forEach(item => {
+    item.addEventListener('click', e => { closeModal(e); });
+  });
+};
+
 export {
-  displayProjectModal,
-  displayToDoModal,
-  displayTasks,
+  deleteTodo,
+  submitProjectForm,
+  loadProjects,
   displayAllTasks,
-  displayTasksbyWeek,
   displaybyProject,
   displayTasksforToday,
-  deleteTodoObjFromArray,
+  displayTasksbyWeek,
+  submitTodoForm,
+  displayToDoModal,
   deleteTodoHTML,
-  loadProjects,
+  displayProjectModal,
   toggleActiveBtns,
 };

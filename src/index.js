@@ -1,18 +1,18 @@
 import './styles.scss';
 import '@fortawesome/fontawesome-free/js/fontawesome';
 import {
-  displayProjectModal,
-  displayToDoModal,
   displayAllTasks,
   displayTasksforToday,
-  deleteTodoObjFromArray,
-  deleteTodoHTML,
   loadProjects,
   displaybyProject,
   displayTasksbyWeek,
+  displayToDoModal,
+  deleteTodoHTML,
+  displayProjectModal,
   toggleActiveBtns,
 }
   from './functions';
+import { deleteTodoObjFromArray } from './pureFunctions';
 
 if (localStorage.getItem('arrayOfProjects') === null) {
   localStorage.setItem('arrayOfProjects', JSON.stringify(['hello', 'world']));
