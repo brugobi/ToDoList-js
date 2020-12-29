@@ -220,8 +220,6 @@ const createProjectForm = () => {
   document.getElementById('projectTitle').focus();
 };
 
-// Change from Functions File to DOM file
-
 export {
   createProjectForm,
   createTodoForm,

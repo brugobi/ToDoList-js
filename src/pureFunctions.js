@@ -31,6 +31,7 @@ const fetchTodoArrayFromLocalStorage = () => {
   const todoArray = JSON.parse(localStorage.getItem('arrayOfTodos') || '[]');
   return todoArray;
 };
+
 const fetchProjectArrayFromLocalStorage = () => {
   const projectsArray = JSON.parse(localStorage.getItem('arrayOfProjects') || '[]');
   return projectsArray;
@@ -50,6 +51,20 @@ const deleteTodoObjFromArray = (array, domId) => {
   return newArray;
 };
 
+const lastId = (todosArray) => {
+  let biggestID = 0;
+  if (todosArray === undefined || todosArray.length === 0) {
+    biggestID = 1;
+  } else {
+    todosArray.forEach((object) => {
+      if (object.id > biggestID) {
+        biggestID = object.id;
+      }
+    });
+  }
+  return biggestID;
+};
+
 const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
 export {
@@ -59,4 +74,5 @@ export {
   saveProjectArrayInLocalStorage,
   deleteTodoObjFromArray,
   capitalizeFirstLetter,
+  lastId,
 };

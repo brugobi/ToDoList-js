@@ -18,6 +18,7 @@ import {
   saveTodoArrayInLocalStorage,
   saveProjectArrayInLocalStorage,
   capitalizeFirstLetter,
+  lastId,
 } from './pureFunctions';
 
 const appendProjectsToMenu = (arrayOfProjects) => {
@@ -60,20 +61,6 @@ const todoListenerDelete = (listToRefresh, args) => {
   document.querySelectorAll('.delete').forEach(item => {
     item.addEventListener('click', (e) => { deleteTodo(e, listToRefresh, args); });
   });
-};
-
-const lastId = (todosArray) => {
-  let biggestID = 0;
-  if (todosArray === undefined || todosArray.length === 0) {
-    biggestID = 1;
-  } else {
-    todosArray.forEach((object) => {
-      if (object.id > biggestID) {
-        biggestID = object.id;
-      }
-    });
-  }
-  return biggestID;
 };
 
 const changeIsDoneStatus = (e, value, callback, args) => {
