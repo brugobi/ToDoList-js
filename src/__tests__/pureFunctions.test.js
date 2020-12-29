@@ -26,6 +26,22 @@ test('fetch TodoArray', () => {
       expect.objectContaining({ isDone: false })
     ])
   )
+});
 
+test('fetchProjectArrayFromLocalStorage', () => {
+  localStorage.setItem('arrayOfProjects', JSON.stringify(['hello', 'hi', 'hey']));
+
+  expect(fetchProjectArrayFromLocalStorage()).toHaveLength(3);
+  expect(Array.isArray(fetchProjectArrayFromLocalStorage())).toBe(true);
+  expect(fetchProjectArrayFromLocalStorage()).toEqual(
+    expect.arrayContaining(['hello']),
+    expect.arrayContaining(['hi']),
+    expect.arrayContaining(['hey'])
+  );
+
+});
+
+test('capitalizeFirstLetter', () => {
+  expect(capitalizeFirstLetter('hello')).toBe('Hello');
 });
 
